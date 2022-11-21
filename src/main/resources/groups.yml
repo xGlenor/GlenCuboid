@@ -1,0 +1,15 @@
+groups:
+  cuboid:
+    name: "Kubida"
+    lore:
+      - "LORE 1"
+      - "LORE 2"
+      - "LORE 3"
+    permission: place.cuboid
+    del-if-no-perm: true
+    limits:
+      - 12
+      - 13
+      - 14
+    flags:
+      PREVENT_TRUE: TRUE
