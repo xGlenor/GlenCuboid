@@ -2,3 +2,5 @@ name: GlenCuboid
 version: '${project.version}'
 main: pl.gduraj.glencuboid.GlenCuboid
 api-version: 1.19
+commands:
+  test:

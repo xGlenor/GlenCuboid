@@ -21,8 +21,10 @@ public class MySQL extends Storage {
     private String POOL_NAME = "GlenCuboidHikariPool";
     private HikariDataSource connectionField;
 
-    public MySQL(String databaseName, String username, String password, String connParams) {
+    public MySQL(String host, int port, String databaseName, String username, String password, String connParams) {
         super("glencuboid_cuboids", "glencuboid_players");
+        this.host = host;
+        this.port = port;
         this.databaseName = databaseName;
         this.username = username;
         this.password = password;
@@ -66,7 +68,7 @@ public class MySQL extends Storage {
     @Override
     public void installCuboids() throws SQLException {
         exec("CREATE TABLE IF NOT EXISTS `" + CUBOID_TABLE + "` ("
-                + "`id` bigint(20) NOT NULL auto_increment PRIMARY KEY, "
+                + "`id` bigint(20) AUTO_INCREMENT PRIMARY KEY NOT NULL , "
                 + "`x` int(11) default NULL, "
                 + "`y` int(11) default NULL, "
                 + "`z` int(11) default NULL, "
@@ -78,12 +80,12 @@ public class MySQL extends Storage {
                 + "`minz` int(11) default NULL, "
                 + "`maxz` int(11) default NULL, "
                 + "`type_id` int(11) DEFAULT NULL, "
+                + "`name` varchar(37) DEFAULT NULL, "
                 + "`owner_uuid` varchar(37) NOT NULL, "
                 + "`owner` varchar(16) NOT NULL, "
                 + "`allowed` text default NULL, "
-                + "`flags` text NOT NULL, "
-                + "`created_at` timestamp default CURRENT_TIMESTAMP"
-                + "UNIQUE KEY `uq_cuboid_fields_1` (`x`,`y`,`z`,`world`))");
+                + "`flags` text DEFAULT NULL, "
+                + "`created_at` timestamp default CURRENT_TIMESTAMP)");
 
         if(!tableExists(CUBOID_TABLE)){
             GlenCuboid.getInstance().getLogger().warning("SQL -> ERROR CREATE CUBOIDS TABLE");
@@ -94,12 +96,11 @@ public class MySQL extends Storage {
     @Override
     public void installPlayers() throws SQLException {
         exec("CREATE TABLE IF NOT EXISTS `" + PLAYERS_TABLE + "` ("
-                + "`id` bigint(20) NOT NULL auto_increment, "
+                + "`id` bigint(20) NOT NULL auto_increment PRIMARY KEY, "
                 + "`uuid` varchar(37) default NULL, "
                 + "`player_name` varchar(16) NOT NULL, "
                 + "`last_seen` bigint(20) default NULL, "
-                + "`flags` TEXT default NULL, "
-                + "PRIMARY KEY (`player_name`))");
+                + "`flags` TEXT default NULL)");
 
         if(!tableExists(PLAYERS_TABLE)){
             GlenCuboid.getInstance().getLogger().warning("SQL -> ERROR CREATE PLAYERS TABLE");

@@ -1,9 +1,9 @@
-package pl.gduraj.glencuboids.cuboid;
+package pl.gduraj.glencuboid.cuboid;
 
 import org.bukkit.configuration.file.FileConfiguration;
-import pl.gduraj.glencuboid.cuboid.Cuboid;
+
 import pl.gduraj.glencuboid.cuboid.flags.Flag;
-import pl.gduraj.glencuboids.flags.Flags;
+
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;

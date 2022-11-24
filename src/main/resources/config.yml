@@ -1,0 +1,8 @@
+connections:
+  method: sql
+  hostname: "127.0.0.1"
+  port: 3303
+  dbName: "siema"
+  username: "root"
+  password: "pass"
+  params: ""
