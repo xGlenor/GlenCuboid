@@ -1,38 +1,43 @@
 package pl.gduraj.glencuboid.cuboid.flags;
 
 import org.bukkit.Material;
+import pl.gduraj.glencuboid.util.xseries.XMaterial;
 
 import java.util.HashSet;
 import java.util.Set;
 
 public enum Flag {
-    ANVIL(),
-    ANIMALS(),
-    ANIMALSKILLING(),
+
+    /*
+        USING FLAGS
+     */
+    ANVIL(XMaterial.ANVIL.parseMaterial(), FlagGroup.USE, "ANVIL", "DESC", true, false),
     BED(),
     BEACON(),
-    BREW(),
-    BUILD(),
     BUTTON(),
-    CRAFT(),
-    DAMAGE(),
-    DESTROY(),
-    EGG(),
-    DOOR(),
+    CRAFTING(),
+    REDSTONE(),
+    DOORS(),
     ENCHANT(),
-    EXPLODE(),
-    ENDERPEARL(),
-    FLOW(),
-    GROW(),
-    ICEFORM(),
-    ICEMELT(),
-    ITEMDROP(),
-    ITEMPICKUP(),
-    LAVAFLOW(),
-    LEASH(),
     LEVER(),
-    MONSTERS(),
-    MOBKILLING();
+    NAMETAG(),
+    PRESSUREPLATES(),
+    SHEAR(),
+    TRADE(),
+    SPAWNEGG(),
+    USE(),
+    INVENTORY(),
+
+    ANIMALSKILLING(),
+    ANIMALSSPAWN(),
+    MONSTERKILLING(),
+    MONSTERSPAWN(),
+    MONSTERDAMAGE(),
+    VILLAGERKILLING(),
+
+
+
+
 
 
     private Material icon;
