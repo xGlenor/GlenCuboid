@@ -6,6 +6,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class Cuboid {
@@ -15,6 +17,8 @@ public class Cuboid {
     private String owner;
 
     protected CuboidArea area;
+    protected CuboidFlag flags;
+    protected List<String> allowed;
     //protected FlagSetiings flags;
     //protected Roles role;
 
@@ -25,6 +29,8 @@ public class Cuboid {
         this.owner = owner.getName().toLowerCase();
         this.name = cuboidName;
         this.area = new CuboidArea(centerLoc, radius, height);
+        this.flags = new CuboidFlag(this);
+        this.allowed = new ArrayList<>();
     }
 
     public Cuboid(UUID ownerUUID, String owner, String cuboidName, CuboidArea area){
@@ -32,6 +38,8 @@ public class Cuboid {
         this.owner = owner.toLowerCase();
         this.name = cuboidName;
         this.area = area;
+        this.flags = new CuboidFlag(this);
+        this.allowed = new ArrayList<>();
     }
 
     public Cuboid(Player player, String cuboidName, CuboidArea area){
@@ -39,6 +47,8 @@ public class Cuboid {
         this.owner = player.getName().toLowerCase();
         this.name = cuboidName;
         this.area = area;
+        this.flags = new CuboidFlag(this);
+        this.allowed = new ArrayList<>();
     }
 
     public void addArea(CuboidArea area){
@@ -109,6 +119,14 @@ public class Cuboid {
         this.createTime = createTime;
     }
 
+    public CuboidFlag getFlags() {
+        return flags;
+    }
+
+    public void setFlags(CuboidFlag flags) {
+        this.flags = flags;
+    }
+
     public boolean isOwner(String name){
         Player player = Bukkit.getPlayer(name);
         if(player != null)
@@ -131,4 +149,11 @@ public class Cuboid {
         return false;
     }
 
+    public List<String> getAllowed() {
+        return allowed;
+    }
+
+    public void setAllowed(List<String> allowed) {
+        this.allowed = allowed;
+    }
 }

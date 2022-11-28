@@ -18,6 +18,7 @@ public class ConfigManager {
     public void install(){
         configs.put("config", new ConfigHandler(plugin, "config"));
         configs.put("messages", new ConfigHandler(plugin, "messages"));
+        configs.put("flags", new ConfigHandler(plugin, "flags"));
         configs.put("groups", new ConfigHandler(plugin, "groups"));
 
         configs.values().forEach(ConfigHandler::createDefault);

@@ -7,7 +7,6 @@ import pl.gduraj.glencuboid.GlenCuboid;
 import pl.gduraj.glencuboid.cuboid.Cuboid;
 import pl.gduraj.glencuboid.cuboid.CuboidArea;
 import pl.gduraj.glencuboid.storage.driver.MySQL;
-import pl.gduraj.glencuboid.util.ChunkRef;
 
 import java.sql.*;
 import java.util.*;
@@ -15,15 +14,15 @@ import java.util.*;
 public class StorageManager {
 
     private Storage storage;
-    private GlenCuboid plugin;
-    private FileConfiguration config;
-    private String method;
-    private String hostname;
-    private int port;
-    private String dbName;
-    private String username;
-    private String password;
-    private String params;
+    private final GlenCuboid plugin;
+    private final FileConfiguration config;
+    private final String method;
+    private final String hostname;
+    private final int port;
+    private final String dbName;
+    private final String username;
+    private final String password;
+    private final String params;
     boolean isMYSQL;
 
     public StorageManager(){
@@ -71,6 +70,7 @@ public class StorageManager {
         try (PreparedStatement ps = getConnection().prepareStatement(query)){
             ps.setString(1, worldName);
             try (ResultSet set = ps.executeQuery()){
+                int i = 0;
                 while (set.next()){
                     try {
                         int x = set.getInt("x");
@@ -80,27 +80,28 @@ public class StorageManager {
                         String name = set.getString("name");
                         UUID uuidOwner = UUID.fromString(set.getString("owner_uuid"));
                         String owner = set.getString("owner");
+                        String flags = set.getString("flags");
 
                         CuboidArea ca = new CuboidArea(new Location(Bukkit.getWorld(world), x, y, z), 25, 255);
                         Cuboid cub = new Cuboid(uuidOwner, owner, name, ca);
 
+                        System.out.println("FLAGI SM: " + flags);
+                        cub.getFlags().setFlags(flags);
+
                         if(!cuboidsWorld.containsKey(world))
                             cuboidsWorld.put(world, new ArrayList<>());
                         cuboidsWorld.get(world).add(cub);
-
+                        i++;
                     }catch (Exception ex){
                         ex.printStackTrace();
                     }
                 }
+                GlenCuboid.getMessageLoaded().add("Zaladowano " + i + " działek na świecie: " + worldName);
+
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
-        cuboidsWorld.forEach((s, cuboids) -> {
-            System.out.println(s + ": " + cuboids);
-        });
-
 
         return cuboidsWorld;
     }
@@ -126,7 +127,7 @@ public class StorageManager {
                 cuboid.getOwnerUUID().toString(),
                 cuboid.getOwner(),
                 null,
-                null
+                cuboid.getFlags().getFlagsAsString()
         };
 
 
@@ -140,9 +141,6 @@ public class StorageManager {
         }
 
     }
-
-
-
 
     public Connection getConnection() throws SQLException{
         return storage.getConnection();

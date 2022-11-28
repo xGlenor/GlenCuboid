@@ -1,6 +1,7 @@
 package pl.gduraj.glencuboid;
 
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -11,10 +12,15 @@ import org.bukkit.plugin.java.JavaPlugin;
 import pl.gduraj.glencuboid.config.ConfigManager;
 import pl.gduraj.glencuboid.cuboid.Cuboid;
 import pl.gduraj.glencuboid.cuboid.CuboidManager;
+import pl.gduraj.glencuboid.listeners.BlockListener;
+import pl.gduraj.glencuboid.listeners.PlayerListener;
 import pl.gduraj.glencuboid.managers.MiniMessageManager;
 import pl.gduraj.glencuboid.storage.StorageManager;
 
+import java.awt.*;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public final class GlenCuboid extends JavaPlugin implements Listener {
 
@@ -24,9 +30,11 @@ public final class GlenCuboid extends JavaPlugin implements Listener {
     private StorageManager storageManager;
     private CuboidManager cuboidManager;
     private MiniMessage miniMessage;
+    private static List<String> messageLoaded;
     @Override
     public void onEnable() {
         instance = this;
+        messageLoaded = new ArrayList<>();
 
         configManager = new ConfigManager();
         configManager.install();
@@ -42,6 +50,12 @@ public final class GlenCuboid extends JavaPlugin implements Listener {
 
         getCommand("test").setExecutor(new testCommand());
 
+        getServer().getPluginManager().registerEvents(new BlockListener(), this);
+        getServer().getPluginManager().registerEvents(new PlayerListener(), this);
+
+        messageLoaded.forEach(s -> {
+            getServer().getConsoleSender().sendMessage(ChatColor.GREEN + s);
+        });
     }
 
     @Override
@@ -97,4 +111,7 @@ public final class GlenCuboid extends JavaPlugin implements Listener {
 
     }
 
+    public static List<String> getMessageLoaded() {
+        return messageLoaded;
+    }
 }

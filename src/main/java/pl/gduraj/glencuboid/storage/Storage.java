@@ -14,10 +14,16 @@ public abstract class Storage {
     }
 
     protected abstract Connection getConnection() throws SQLException;
+
     public abstract void init() throws SQLException;
+
     public abstract void install();
+
     public abstract void installCuboids() throws SQLException;
+
     public abstract void installPlayers() throws SQLException;
+
     public abstract void close() throws SQLException;
+
     public abstract boolean tableExists(String table) throws SQLException;
 }

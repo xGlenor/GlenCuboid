@@ -1,7 +1,6 @@
 package pl.gduraj.glencuboid.cuboid;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -57,8 +56,23 @@ public class CuboidManager {
             return;
         }
 
-        CuboidArea ca = new CuboidArea(location, 25, 255);
+        CuboidArea ca = new CuboidArea(location, 25, 300);
         Cuboid cb = new Cuboid(player, name, ca);
+        List<Flag> flags = new ArrayList<>();
+        List<Flag> disabledflags = new ArrayList<>();
+        flags.add(Flag.USE);
+        flags.add(Flag.BEACON);
+        flags.add(Flag.DOORS);
+        flags.add(Flag.ANIMALSKILLING);
+        flags.add(Flag.CRAFTING);
+        flags.add(Flag.ENCHANT);
+        flags.add(Flag.SHEARS);
+        flags.add(Flag.BUTTONS);
+        disabledflags.add(Flag.REDSTONE);
+        disabledflags.add(Flag.ANIMALSKILLING);
+        disabledflags.add(Flag.ANIMALSSPAWN);
+        cb.getFlags().setFlags(flags);
+        cb.getFlags().setDisabledFlags(disabledflags);
 
         try {
             plugin.getStorageManager().insertField(cb);
@@ -69,6 +83,44 @@ public class CuboidManager {
         }
 
     }
+
+    public Cuboid getEnabledSource(Location loc, Flag flag){
+
+        Cuboid cuboid = getByLoc(loc);
+
+        if(cuboid.getFlags().hasFlag(flag)){
+            return cuboid;
+        }
+        return null;
+    }
+
+    public boolean test(Cuboid cuboid, String target){
+        if(cuboid == null || target == null){
+            return false;
+        }
+
+        if(cuboid.getAllowed().contains(target)){
+            return true;
+        }
+
+        return cuboid.isOwner(target);
+    }
+
+    public boolean checkPerms(Cuboid cuboid, String playerName, Flag flag){
+
+        if(!cuboid.getFlags().hasFlag(flag)){
+            return false;
+        }
+
+        return test(cuboid, playerName);
+    }
+
+    public void updateCuboid(Cuboid cuboid){
+        cuboids.clear();
+        cuboids.put(cuboid.getName(), cuboid);
+        calculateChunks(cuboid.getName());
+    }
+
 
     public void load(){
         this.cuboids.clear();
@@ -119,6 +171,7 @@ public class CuboidManager {
     }
 
     public void calculateChunks(String name){
+        this.chunkCuboids.clear();
         Cuboid cub = cuboids.get(name);
         if(cub != null){
             String world = cub.getArea().getWorldName();

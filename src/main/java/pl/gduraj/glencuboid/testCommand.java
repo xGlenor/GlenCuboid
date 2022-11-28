@@ -1,21 +1,15 @@
 package pl.gduraj.glencuboid;
 
-import net.kyori.adventure.platform.bukkit.BukkitComponentSerializer;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.ComponentApplicable;
-import net.kyori.adventure.text.TextComponent;
-import net.kyori.adventure.text.minimessage.MiniMessage;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import org.bukkit.Material;
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import pl.gduraj.glencuboid.cuboid.Cuboid;
-import pl.gduraj.glencuboid.util.ItemBuilder;
+import pl.gduraj.glencuboid.cuboid.Flag;
+import pl.gduraj.glencuboid.util.ChatUtil;
 
 public class testCommand implements CommandExecutor {
 
@@ -31,17 +25,64 @@ public class testCommand implements CommandExecutor {
         if(sender instanceof Player){
             Player player = (Player) sender;
 
-            if(args.length > 0){
-                if(args[0].equalsIgnoreCase("test")){
+            if(args.length > 0) {
+                if (args[0].equalsIgnoreCase("test")) {
                     System.out.println("COSIK: " + plugin.getCuboidManager().getCuboids());
                     return true;
+                } else if(args[0].equalsIgnoreCase("flag")) {
+                    Flag flag1 = Flag.getFlag(args[1].toUpperCase());
+                    if(flag1 != null){
+                        Cuboid cub = plugin.getCuboidManager().getByLoc(player);
+                        if(cub.getFlags().hasFlag(flag1))
+                            cub.getFlags().addDisabledFlag(flag1);
+                        else
+                            cub.getFlags().removeDisabledFlag(flag1);
+
+                        ChatUtil.sendMSGColor(player, "<green> Pomyślnie zmieniono flagę");
+                        plugin.getCuboidManager().updateCuboid(cub);
+                        return true;
+                    }
+                    ChatUtil.sendMSGColor(player, "<red>Nie ma takiej flagi");
+                    return true;
+
+                } else if(args[0].equalsIgnoreCase("owner")) {
+                    String ownerNew = args[1];
+
+                    Player player1 = Bukkit.getPlayer(ownerNew);
+                    Cuboid cub = plugin.getCuboidManager().getByLoc(player);
+                    if (cub != null) {
+                        if (player1 == null) {
+                            OfflinePlayer ofPlayer = Bukkit.getOfflinePlayer(ownerNew);
+                            cub.setOwner(ofPlayer.getName().toLowerCase());
+                            cub.setOwnerUUID(ofPlayer.getUniqueId());
+                            plugin.getCuboidManager().updateCuboid(cub);
+                            ChatUtil.sendMSGColor(player, "<green>Zmieniono właściciela na: " + ofPlayer.getName());
+                            return true;
+                        }
+
+                        cub.setOwner(player1.getName().toLowerCase());
+                        cub.setOwnerUUID(player1.getUniqueId());
+                        plugin.getCuboidManager().updateCuboid(cub);
+                        ChatUtil.sendMSGColor(player, "<green>Zmieniono właściciela na: " + player1.getName());
+                        return true;
+                    }
                 }else if(args[0].equalsIgnoreCase("check")){
-                    String name = args[1].split(" ")[0];
-                    Cuboid cub = plugin.getCuboidManager().getByName(name);
+                    Cuboid cub = plugin.getCuboidManager().getByLoc(player);
                     if(cub != null){
                         player.sendMessage(cub.getName());
                         player.sendMessage(cub.getOwner());
                         player.sendMessage(cub.getOwnerUUID());
+                        player.sendMessage("FLAGS:");
+                        System.out.println(cub.getFlags().getFlags());
+                        System.out.println(cub.getFlags().getDisabledFlags());
+                        for(Flag f : cub.getFlags().getFlags()){
+                            player.sendMessage(f.toString());
+                        }
+                        player.sendMessage("DISABLE FLAGS:");
+                        for(Flag f : cub.getFlags().getDisabledFlags()){
+                            player.sendMessage(f.toString());
+                        }
+
                     }else{
                         player.sendMessage("nie znaleziono");
                     }
