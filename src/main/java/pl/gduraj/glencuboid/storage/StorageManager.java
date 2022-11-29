@@ -80,12 +80,13 @@ public class StorageManager {
                         String name = set.getString("name");
                         UUID uuidOwner = UUID.fromString(set.getString("owner_uuid"));
                         String owner = set.getString("owner");
+                        String preventUse = set.getString("prevent_use");
                         String flags = set.getString("flags");
 
                         CuboidArea ca = new CuboidArea(new Location(Bukkit.getWorld(world), x, y, z), 25, 255);
                         Cuboid cub = new Cuboid(uuidOwner, owner, name, ca);
 
-                        System.out.println("FLAGI SM: " + flags);
+                        cub.getFlags().setPreventUse(preventUse);
                         cub.getFlags().setFlags(flags);
 
                         if(!cuboidsWorld.containsKey(world))

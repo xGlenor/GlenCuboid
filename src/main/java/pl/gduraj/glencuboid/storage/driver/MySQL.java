@@ -84,6 +84,7 @@ public class MySQL extends Storage {
                 + "`owner_uuid` varchar(37) NOT NULL, "
                 + "`owner` varchar(16) NOT NULL, "
                 + "`allowed` text default NULL, "
+                + "`prevent_use` text default NULL, "
                 + "`flags` text DEFAULT NULL, "
                 + "`created_at` timestamp default CURRENT_TIMESTAMP)");
 

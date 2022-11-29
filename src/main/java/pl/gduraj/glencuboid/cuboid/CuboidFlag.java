@@ -1,6 +1,7 @@
 package pl.gduraj.glencuboid.cuboid;
 
 import com.google.gson.JsonObject;
+import org.bukkit.Material;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
@@ -9,6 +10,7 @@ import org.json.simple.parser.ParseException;
 import pl.gduraj.glencuboid.GlenCuboid;
 import pl.gduraj.glencuboid.cuboid.Cuboid;
 import pl.gduraj.glencuboid.cuboid.Flag;
+import pl.gduraj.glencuboid.util.xseries.XMaterial;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +19,7 @@ public class CuboidFlag {
 
     private Cuboid cuboid;
     private List<Flag> flags = new ArrayList<>();
+    private List<Material> preventUse = new ArrayList<>();
     private List<Flag> disabledFlags = new ArrayList<>();
 
     public CuboidFlag(Cuboid cuboid){
@@ -99,44 +102,37 @@ public class CuboidFlag {
 
         }
 
+    }
 
+    public void setPreventUse(String jsonSTR){
+        JSONArray array = (JSONArray) JSONValue.parse(jsonSTR);
 
+        if(array != null) {
 
-
-/*        if(JSONString != null && !JSONString.isEmpty()){
-            JSONObject flags = (JSONObject) JSONValue.parse(JSONString);
-            System.out.println("FLAGS JSON: " + flags);
-            if(flags != null){
-                for(Object flag : flags.keySet()){
-                    System.out.println("SETFLAG 1: "+ flag);
-                    try {
-                        System.out.println("SETFLAG 2: " + flag);
-                        if(flag.equals("disabledFlags")){
-                            JSONArray disabledFlagsJSON = (JSONArray) flags.get(flag);
-
-                            System.out.println("disabledFlags: " + disabledFlagsJSON);
-                            System.out.println(disabledFlags);
-                            this.disabledFlags.addAll(disabledFlagsJSON);
-                        } else if (flag.equals("flags")) {
-                            JSONArray flagsJSON = (JSONArray) flags.get(flag);
-
-                            System.out.println("flags: " + flagsJSON);
-                            System.out.println(flags);
-                            this.flags.addAll(flagsJSON);
-                        }
-                    }catch (Exception ex){
-                        GlenCuboid.getMessageLoaded().add("Blad podczas odczytania flagi: " + flag + "\n Values: " +flags.get(flag));
-                    }
-
-                }
+            for (Object obj : array){
+                this.preventUse.add(XMaterial.valueOf((String) obj).parseMaterial());
             }
 
-        }*/
+        }
 
+    }
+    public boolean isPreventMaterial(Material material){
+        if(material != null){
+            return preventUse.contains(material);
+        }
+        return false;
     }
 
     public List<Flag> getFlags() {
         return flags;
+    }
+
+    public List<Material> getPreventUse() {
+        return preventUse;
+    }
+
+    public void setPreventUse(List<Material> preventUse) {
+        this.preventUse = preventUse;
     }
 
     public void setFlags(List<Flag> flags) {

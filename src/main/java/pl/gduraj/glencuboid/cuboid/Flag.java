@@ -1,6 +1,8 @@
 package pl.gduraj.glencuboid.cuboid;
 
 import org.bukkit.Material;
+import org.bukkit.configuration.file.FileConfiguration;
+import pl.gduraj.glencuboid.GlenCuboid;
 import pl.gduraj.glencuboid.util.xseries.XMaterial;
 
 import java.util.Arrays;
@@ -162,4 +164,19 @@ public enum Flag {
         return Arrays.asList(flag);
         //return ChatUtil.listToColor(GlenCuboid.getInstance().getConfigManager().getConfig("flags").getStringList("flags." + flag + ".lores"));
     }
+
+    public static void loadFLAG(){
+        FileConfiguration config = GlenCuboid.getInstance().getConfigManager().getConfig("flags");
+
+        int i = 0;
+        for(Flag flag : values()){
+            config.set("flags." + flag.toString() + ".name", flag.toString());
+            config.set("flags." + flag.toString() + ".lores", Arrays.asList("Lore 1", "Lore 2"));
+            i++;
+        }
+        GlenCuboid.getInstance().getConfigManager().saveConfig("flags");
+        GlenCuboid.getMessageLoaded().add("Zaladowanoa " + i + " flag w plikach konfiguracyjnych");
+
+    }
+
 }

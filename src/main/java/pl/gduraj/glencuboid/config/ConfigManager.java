@@ -28,6 +28,10 @@ public class ConfigManager {
         configs.values().forEach(ConfigHandler::reload);
     }
 
+    public void saveConfig(String config) {
+        configs.get(config.toUpperCase()).saveConfig();
+    }
+
     public FileConfiguration getConfig(String config){
         if(configs.containsKey(config.toLowerCase()))
             return configs.get(config.toLowerCase()).getConfig();

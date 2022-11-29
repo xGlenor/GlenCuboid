@@ -1,0 +1,29 @@
+ANVIL(XMaterial.ANVIL.parseMaterial(), FlagGroup.USE, getConfigName("ANVIL"), getConfigDesc("ANVIL"), true, false),
+BED(XMaterial.WHITE_BED.parseMaterial(), FlagGroup.USE, getConfigName("BED"), getConfigDesc("BED"), true, false),
+BEACON(XMaterial.BEACON.parseMaterial(), FlagGroup.USE, getConfigName("BEACON"), getConfigDesc("BEACON"), true, false),
+BUTTONS(XMaterial.STONE_BUTTON.parseMaterial(), FlagGroup.USE, getConfigName("BUTTONS"), getConfigDesc("BUTTONS"), true, false),
+CRAFTING(XMaterial.CRAFTING_TABLE.parseMaterial(), FlagGroup.USE, getConfigName("CRAFTING"), getConfigDesc("CRAFTING"), true, false),
+REDSTONE(XMaterial.REDSTONE_TORCH.parseMaterial(), FlagGroup.USE, getConfigName("REDSTONE"), getConfigDesc("REDSTONE"), true, false),
+DOORS(XMaterial.OAK_DOOR.parseMaterial(), FlagGroup.USE, getConfigName("DOORS"), getConfigDesc("DOORS"), true, false),
+ENCHANT(XMaterial.ENCHANTING_TABLE.parseMaterial(), FlagGroup.USE, getConfigName("ENCHANT"), getConfigDesc("ENCHANT"), true, false),
+LEVER(XMaterial.LEVER.parseMaterial(), FlagGroup.USE, getConfigName("LEVER"), getConfigDesc("LEVER"), true, false),
+NAMETAG(XMaterial.NAME_TAG.parseMaterial(), FlagGroup.USE, getConfigName("NAMETAG"), getConfigDesc("NAMETAG"), true, false),
+PRESSUREPLATES(XMaterial.LIGHT_WEIGHTED_PRESSURE_PLATE.parseMaterial(), FlagGroup.USE, getConfigName("PRESSUREPLATES"), getConfigDesc("PRESSUREPLATES"), true, false),
+SHEARS(XMaterial.SHEARS.parseMaterial(), FlagGroup.USE, getConfigName("SHEARS"), getConfigDesc("SHEARS"), true, false),
+TRADE(XMaterial.EMERALD.parseMaterial(), FlagGroup.USE, getConfigName("TRADE"), getConfigDesc("TRADE"), true, false),
+SPAWNEGG(XMaterial.SHEEP_SPAWN_EGG.parseMaterial(), FlagGroup.USE, getConfigName("SPAWNEGG"), getConfigDesc("SPAWNEGG"), true, false),
+
+
+USE(XMaterial.SHEEP_SPAWN_EGG.parseMaterial(), FlagGroup.USE, getConfigName("USE"), getConfigDesc("USE"),true, false),
+INVENTORY(XMaterial.SHEEP_SPAWN_EGG.parseMaterial(), FlagGroup.USE, getConfigName("INVENTORY"), getConfigDesc("INVENTORY"),true, false),
+
+ANIMALSKILLING(XMaterial.PORKCHOP.parseMaterial(), FlagGroup.DAMAGE, getConfigName("ANIMALKILLING"), getConfigDesc("ANIMALKILLING"), true, false),
+ANIMALSSPAWN(XMaterial.SHEEP_SPAWN_EGG.parseMaterial(), FlagGroup.DAMAGE, getConfigName("ANIMALSPAWN"), getConfigDesc("ANIMALSPAWN"), true, false),
+MONSTERKILLING(XMaterial.BONE.parseMaterial(), FlagGroup.DAMAGE, getConfigName("MONSTERKILLING"), getConfigDesc("MONSTERKILLING"), true, false),
+MONSTERSPAWN(XMaterial.ZOMBIE_SPAWN_EGG.parseMaterial(), FlagGroup.DAMAGE, getConfigName("MONSTERSPAWN"), getConfigDesc("MONSTERSPAWN"), true, false),
+MONSTERDAMAGE(XMaterial.ROTTEN_FLESH.parseMaterial(), FlagGroup.DAMAGE, getConfigName("MONSTERDAMAGE"), getConfigDesc("MONSTERDAMAGE"), true, false),
+VILLAGERKILLING(XMaterial.VILLAGER_SPAWN_EGG.parseMaterial(), FlagGroup.DAMAGE, getConfigName("VILLAGERKILLING"), getConfigDesc("VILLAGERKILLING"), true, false),
+WATERMOBSKILLING(XMaterial.PUFFERFISH.parseMaterial(), FlagGroup.DAMAGE, getConfigName("WATERMOBSKILLING"), getConfigDesc("WATERMOBSKILLING"), true, false),
+WATERMOBSSPAWN(XMaterial.SHEEP_SPAWN_EGG.parseMaterial(), FlagGroup.DAMAGE, getConfigName("WATERMOBSPAWN"), getConfigDesc("WATERMOBSPAWN"), true, false);
+
+

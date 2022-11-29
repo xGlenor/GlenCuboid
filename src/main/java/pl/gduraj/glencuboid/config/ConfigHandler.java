@@ -4,6 +4,7 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import pl.gduraj.glencuboid.GlenCuboid;
+import pl.gduraj.glencuboid.cuboid.Flag;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,6 +30,10 @@ public class ConfigHandler {
 
         try {
             config.load(file);
+            if(name.equalsIgnoreCase("flags.yml")){
+                Flag.loadFLAG();
+            }
+
         } catch (InvalidConfigurationException | IOException e) {
             e.printStackTrace();
             plugin.getLogger().warning("Error create file: " + name);
