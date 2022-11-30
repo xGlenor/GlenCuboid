@@ -2,6 +2,7 @@ package pl.gduraj.glencuboid.config;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import pl.gduraj.glencuboid.GlenCuboid;
+import pl.gduraj.glencuboid.cuboid.Flag;
 
 import java.util.HashMap;
 
@@ -22,6 +23,7 @@ public class ConfigManager {
         configs.put("groups", new ConfigHandler(plugin, "groups"));
 
         configs.values().forEach(ConfigHandler::createDefault);
+
     }
 
     public void reloadAll(){
@@ -29,7 +31,7 @@ public class ConfigManager {
     }
 
     public void saveConfig(String config) {
-        configs.get(config.toUpperCase()).saveConfig();
+        configs.get(config.toLowerCase()).saveConfig();
     }
 
     public FileConfiguration getConfig(String config){

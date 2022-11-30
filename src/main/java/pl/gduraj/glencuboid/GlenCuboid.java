@@ -12,6 +12,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import pl.gduraj.glencuboid.config.ConfigManager;
 import pl.gduraj.glencuboid.cuboid.Cuboid;
 import pl.gduraj.glencuboid.cuboid.CuboidManager;
+import pl.gduraj.glencuboid.cuboid.Flag;
 import pl.gduraj.glencuboid.listeners.BlockListener;
 import pl.gduraj.glencuboid.listeners.PlayerListener;
 import pl.gduraj.glencuboid.managers.MiniMessageManager;
@@ -56,6 +57,9 @@ public final class GlenCuboid extends JavaPlugin implements Listener {
         messageLoaded.forEach(s -> {
             getServer().getConsoleSender().sendMessage(ChatColor.GREEN + s);
         });
+
+        Flag.loadFLAG();
+        getConfigManager().saveConfig("flags");
     }
 
     @Override

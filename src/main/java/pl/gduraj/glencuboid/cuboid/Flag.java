@@ -3,6 +3,7 @@ package pl.gduraj.glencuboid.cuboid;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import pl.gduraj.glencuboid.GlenCuboid;
+import pl.gduraj.glencuboid.util.ChatUtil;
 import pl.gduraj.glencuboid.util.xseries.XMaterial;
 
 import java.util.Arrays;
@@ -156,13 +157,13 @@ public enum Flag {
     }
 
     public static String getConfigName(String flag){
-        return flag;
-        //return ChatUtil.strToColor(GlenCuboid.getInstance().getConfigManager().getConfig("flags").getString("flags." + flag + ".name"));
+        //return flag;
+        return ChatUtil.strToColor(GlenCuboid.getInstance().getConfigManager().getConfig("flags").getString("flags." + flag + ".name"));
     }
 
     public static List<String> getConfigDesc(String flag){
-        return Arrays.asList(flag);
-        //return ChatUtil.listToColor(GlenCuboid.getInstance().getConfigManager().getConfig("flags").getStringList("flags." + flag + ".lores"));
+        //return Arrays.asList(flag);
+        return ChatUtil.listToColor(GlenCuboid.getInstance().getConfigManager().getConfig("flags").getStringList("flags." + flag + ".lores"));
     }
 
     public static void loadFLAG(){
@@ -174,7 +175,6 @@ public enum Flag {
             config.set("flags." + flag.toString() + ".lores", Arrays.asList("Lore 1", "Lore 2"));
             i++;
         }
-        GlenCuboid.getInstance().getConfigManager().saveConfig("flags");
         GlenCuboid.getMessageLoaded().add("Zaladowanoa " + i + " flag w plikach konfiguracyjnych");
 
     }

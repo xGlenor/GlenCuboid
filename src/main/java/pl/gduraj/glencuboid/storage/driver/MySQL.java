@@ -5,10 +5,7 @@ import com.zaxxer.hikari.HikariDataSource;
 import pl.gduraj.glencuboid.GlenCuboid;
 import pl.gduraj.glencuboid.storage.Storage;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class MySQL extends Storage {
 
@@ -51,7 +48,6 @@ public class MySQL extends Storage {
     @Override
     public void install() {
         HikariConfig config = new HikariConfig();
-
         config.setJdbcUrl("jdbc:mysql://" + host + ":" + port + "/" + databaseName + connParams);
         config.setUsername(username);
         config.setPassword(password);

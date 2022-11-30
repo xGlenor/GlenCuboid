@@ -30,9 +30,6 @@ public class ConfigHandler {
 
         try {
             config.load(file);
-            if(name.equalsIgnoreCase("flags.yml")){
-                Flag.loadFLAG();
-            }
 
         } catch (InvalidConfigurationException | IOException e) {
             e.printStackTrace();
