@@ -2,23 +2,15 @@ package pl.gduraj.glencuboid;
 
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.ChatColor;
-import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import pl.gduraj.glencuboid.config.ConfigManager;
-import pl.gduraj.glencuboid.cuboid.Cuboid;
 import pl.gduraj.glencuboid.cuboid.CuboidManager;
-import pl.gduraj.glencuboid.cuboid.Flag;
-import pl.gduraj.glencuboid.listeners.BlockListener;
-import pl.gduraj.glencuboid.listeners.PlayerListener;
+import pl.gduraj.glencuboid.cuboid.team.TeamManager;
+import pl.gduraj.glencuboid.listeners.UseFlagListener;
 import pl.gduraj.glencuboid.managers.MiniMessageManager;
 import pl.gduraj.glencuboid.storage.StorageManager;
 
-import java.awt.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,8 +22,10 @@ public final class GlenCuboid extends JavaPlugin implements Listener {
     private ConfigManager configManager;
     private StorageManager storageManager;
     private CuboidManager cuboidManager;
+    private TeamManager teamManager;
     private MiniMessage miniMessage;
     private static List<String> messageLoaded;
+
     @Override
     public void onEnable() {
         instance = this;
@@ -47,19 +41,19 @@ public final class GlenCuboid extends JavaPlugin implements Listener {
         cuboidManager = new CuboidManager();
         cuboidManager.load();
 
+        teamManager = new TeamManager();
+
+
         getServer().getPluginManager().registerEvents(this, this);
 
         getCommand("test").setExecutor(new testCommand());
 
-        getServer().getPluginManager().registerEvents(new BlockListener(), this);
-        getServer().getPluginManager().registerEvents(new PlayerListener(), this);
+        getServer().getPluginManager().registerEvents(new UseFlagListener(), this);
 
         messageLoaded.forEach(s -> {
             getServer().getConsoleSender().sendMessage(ChatColor.GREEN + s);
         });
 
-        Flag.loadFLAG();
-        getConfigManager().saveConfig("flags");
     }
 
     @Override
@@ -88,7 +82,7 @@ public final class GlenCuboid extends JavaPlugin implements Listener {
         return configManager;
     }
 
-    public void disablePlugin(){
+    public void disablePlugin() {
         getServer().getPluginManager().disablePlugin(this);
     }
 
@@ -100,19 +94,8 @@ public final class GlenCuboid extends JavaPlugin implements Listener {
         return cuboidManager;
     }
 
-    @EventHandler
-    public void onBlockBreak(BlockPlaceEvent ev){
-        if(ev.isCancelled()) return;
-
-        Cuboid cub = getCuboidManager().getByLoc(ev.getBlock().getLocation());
-        if(cub != null){
-            if(!cub.isOwner(ev.getPlayer())){
-                ev.setBuild(false);
-                ev.setCancelled(true);
-                ev.getPlayer().sendMessage("Nie mozesz tu stawiac blokow");
-            }
-        }
-
+    public TeamManager getTeamManager() {
+        return teamManager;
     }
 
     public static List<String> getMessageLoaded() {

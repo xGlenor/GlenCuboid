@@ -17,7 +17,7 @@ public class CuboidArea {
     private String worldName;
     private World world;
 
-    public CuboidArea(Location centerLoc, int radius, int height){
+    public CuboidArea(Location centerLoc, int radius, int height) {
         int lowx = (int) (centerLoc.getX() - radius);
         int highx = (int) (centerLoc.getX() + radius);
         int lowz = (int) (centerLoc.getZ() - radius);
@@ -38,7 +38,7 @@ public class CuboidArea {
         this.centerLocation = centerLoc;
     }
 
-    public CuboidArea(Location startLoc, Location endLoc){
+    public CuboidArea(Location startLoc, Location endLoc) {
         int highx, highy, highz, lowx, lowy, lowz;
         if (startLoc == null || endLoc == null)
             return;
@@ -68,7 +68,9 @@ public class CuboidArea {
         this.world = (startLoc.getWorld() != null) ? startLoc.getWorld() : ((startLoc.getWorld() != null) ? startLoc.getWorld() : null);
         this.worldName = (this.world != null) ? this.world.getName() : null;
     }
-    public CuboidArea() {}
+
+    public CuboidArea() {
+    }
 
     public boolean isAreaWithinArea(CuboidArea area) {
         return (containsLoc(area.highPoints, area.getWorldName()) && containsLoc(area.lowPoints, area.getWorldName()));
@@ -93,9 +95,7 @@ public class CuboidArea {
             return false;
         if (this.lowPoints.getBlockY() > loc.getBlockY())
             return false;
-        if (this.highPoints.getBlockY() < loc.getBlockY())
-            return false;
-        return true;
+        return this.highPoints.getBlockY() >= loc.getBlockY();
     }
 
     public boolean checkCollision(CuboidArea area) {
@@ -122,8 +122,7 @@ public class CuboidArea {
                 int A1LZ = A1Low.getBlockZ();
                 int A2HZ = A2High.getBlockZ();
                 int A2LZ = A2Low.getBlockZ();
-                if ((A1HZ >= A2LZ && A1HZ <= A2HZ) || (A1LZ >= A2LZ && A1LZ <= A2HZ) || (A2HZ >= A1LZ && A2HZ <= A1HZ) || (A2LZ >= A1LZ && A2LZ <= A1HZ))
-                    return true;
+                return (A1HZ >= A2LZ && A1HZ <= A2HZ) || (A1LZ >= A2LZ && A1LZ <= A2HZ) || (A2HZ >= A1LZ && A2HZ <= A1HZ) || (A2LZ >= A1LZ && A2LZ <= A1HZ);
             }
         }
         return false;
@@ -144,8 +143,8 @@ public class CuboidArea {
         return chunks;
     }
 
-    public CuboidArea getAreaByLoc(Location location){
-        if(this.containsLoc(location))
+    public CuboidArea getAreaByLoc(Location location) {
+        if (this.containsLoc(location))
             return this;
         return null;
     }

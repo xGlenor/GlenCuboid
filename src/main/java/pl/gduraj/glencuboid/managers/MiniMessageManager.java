@@ -8,34 +8,35 @@ import pl.gduraj.glencuboid.GlenCuboid;
 
 public class MiniMessageManager {
 
-    private GlenCuboid plugin;
+    private final GlenCuboid plugin;
     private MiniMessage miniMessage;
     private BukkitAudiences audiences;
 
-    public MiniMessageManager(){
+    public MiniMessageManager() {
         plugin = GlenCuboid.getInstance();
 
     }
 
     public @NonNull BukkitAudiences adventure() {
-        if(this.audiences == null) {
+        if (this.audiences == null) {
             throw new IllegalStateException("Tried to access Adventure when the plugin was disabled!");
         }
         return this.audiences;
     }
-    public void enableMiniMessage(){
+
+    public void enableMiniMessage() {
         audiences = BukkitAudiences.create(plugin);
         register();
     }
 
-    public void disableMiniMessage(){
-        if(audiences != null){
-           audiences.close();
-           audiences = null;
+    public void disableMiniMessage() {
+        if (audiences != null) {
+            audiences.close();
+            audiences = null;
         }
     }
 
-    private void register(){
+    private void register() {
         miniMessage = MiniMessage.builder()
                 .tags(TagResolver.standard())
                 .build();

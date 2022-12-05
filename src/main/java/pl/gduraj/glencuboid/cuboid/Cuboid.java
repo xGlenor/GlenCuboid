@@ -5,6 +5,7 @@ import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
+import pl.gduraj.glencuboid.cuboid.team.CuboidTeam;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,45 +14,37 @@ import java.util.UUID;
 public class Cuboid {
 
     private String name;
-    private UUID ownerUUID;
-    private String owner;
 
     protected CuboidArea area;
     protected CuboidFlag flags;
-    protected List<String> allowed;
+    protected CuboidTeam team;
     //protected FlagSetiings flags;
     //protected Roles role;
 
     protected long createTime;
 
-    public Cuboid(Player owner, String cuboidName, Location centerLoc, int radius, int height){
-        this.ownerUUID = owner.getUniqueId();
-        this.owner = owner.getName().toLowerCase();
+    public Cuboid(Player owner, String cuboidName, Location centerLoc, int radius, int height) {
+        this.team = new CuboidTeam(owner.getUniqueId(), owner.getName().toLowerCase(), this);
         this.name = cuboidName;
         this.area = new CuboidArea(centerLoc, radius, height);
         this.flags = new CuboidFlag(this);
-        this.allowed = new ArrayList<>();
     }
 
-    public Cuboid(UUID ownerUUID, String owner, String cuboidName, CuboidArea area){
-        this.ownerUUID = ownerUUID;
-        this.owner = owner.toLowerCase();
+    public Cuboid(UUID ownerUUID, String owner, String cuboidName, CuboidArea area) {
+        this.team = new CuboidTeam(ownerUUID, owner, this);
         this.name = cuboidName;
         this.area = area;
         this.flags = new CuboidFlag(this);
-        this.allowed = new ArrayList<>();
     }
 
-    public Cuboid(Player player, String cuboidName, CuboidArea area){
-        this.ownerUUID = player.getUniqueId();
-        this.owner = player.getName().toLowerCase();
+    public Cuboid(Player player, String cuboidName, CuboidArea area) {
+        this.team = new CuboidTeam(player.getUniqueId(), player.getName().toLowerCase(), this);
         this.name = cuboidName;
         this.area = area;
         this.flags = new CuboidFlag(this);
-        this.allowed = new ArrayList<>();
     }
 
-    public void addArea(CuboidArea area){
+    public void addArea(CuboidArea area) {
 
     }
 
@@ -59,25 +52,26 @@ public class Cuboid {
         return this.area.checkCollision(area);
     }
 
-    public boolean containsLoc(Location loc){
+    public boolean containsLoc(Location loc) {
         return this.area.containsLoc(loc);
     }
 
-    public boolean containsLoc(Vector vector, String world){
+    public boolean containsLoc(Vector vector, String world) {
         return this.area.containsLoc(vector, world);
     }
 
-    public CuboidArea getAreaByLoc(Location loc){
+    public CuboidArea getAreaByLoc(Location loc) {
         return this.area.getAreaByLoc(loc);
     }
 
-    public void tpToCuboid(Player owner, Player targetPlayer){
+    public void tpToCuboid(Player owner, Player targetPlayer) {
         targetPlayer.teleport(this.area.getCenterLocation());
-        owner.sendMessage("Teleportacja gracza " + targetPlayer.getName().toLowerCase()  + " na srodek dzialki");
+        owner.sendMessage("Teleportacja gracza " + targetPlayer.getName().toLowerCase() + " na srodek dzialki");
         owner.sendMessage("Teleportowano cie na dzialke: " + owner.getName().toLowerCase() + " | " + getName());
     }
 
-    private Cuboid(){}
+    private Cuboid() {
+    }
 
     public String getName() {
         return name;
@@ -85,22 +79,6 @@ public class Cuboid {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public UUID getOwnerUUID() {
-        return ownerUUID;
-    }
-
-    public void setOwnerUUID(UUID ownerUUID) {
-        this.ownerUUID = ownerUUID;
-    }
-
-    public String getOwner() {
-        return owner;
-    }
-
-    public void setOwner(String owner) {
-        this.owner = owner;
     }
 
     public CuboidArea getArea() {
@@ -127,33 +105,28 @@ public class Cuboid {
         this.flags = flags;
     }
 
-    public boolean isOwner(String name){
-        Player player = Bukkit.getPlayer(name);
-        if(player != null)
-            isOwner(player);
-        return this.owner.equals(name.toLowerCase());
+    public CuboidTeam getTeam() {
+        return team;
     }
 
-    public boolean isOwner(UUID uuid){
-        return this.getOwnerUUID().toString().equals(uuid.toString());
+    public void setTeam(CuboidTeam team) {
+        this.team = team;
     }
 
-    public boolean isOwner(Player player){
-        if(player == null) return false;
-        return this.getOwnerUUID().equals(player.getUniqueId());
+    public boolean isOwner(String name) {
+        return getTeam().isOwner(name);
     }
 
-    public boolean isOwner(CommandSender sender){
-        if(sender instanceof Player)
-            return this.getOwnerUUID().equals(((Player) sender).getUniqueId());
-        return false;
+    public boolean isOwner(UUID uuid) {
+        return getTeam().isOwner(uuid);
     }
 
-    public List<String> getAllowed() {
-        return allowed;
+    public boolean isOwner(Player player) {
+        return getTeam().isOwner(player);
     }
 
-    public void setAllowed(List<String> allowed) {
-        this.allowed = allowed;
+    public boolean isOwner(CommandSender sender) {
+        return getTeam().isOwner(sender);
     }
+
 }

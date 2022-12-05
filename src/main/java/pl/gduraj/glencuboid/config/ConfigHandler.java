@@ -4,19 +4,18 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import pl.gduraj.glencuboid.GlenCuboid;
-import pl.gduraj.glencuboid.cuboid.Flag;
 
 import java.io.File;
 import java.io.IOException;
 
 public class ConfigHandler {
 
-    private GlenCuboid plugin;
-    private String name;
+    private final GlenCuboid plugin;
+    private final String name;
     private FileConfiguration config;
-    private File file;
+    private final File file;
 
-    public ConfigHandler(GlenCuboid plugin, String name){
+    public ConfigHandler(GlenCuboid plugin, String name) {
         this.plugin = plugin;
         this.name = name + ".yml";
         this.file = new File(plugin.getDataFolder(), this.name);
@@ -24,7 +23,7 @@ public class ConfigHandler {
     }
 
     public void createDefault() {
-        if(!file.exists()){
+        if (!file.exists()) {
             plugin.saveResource(name, false);
         }
 
@@ -37,12 +36,12 @@ public class ConfigHandler {
         }
     }
 
-    public void saveConfig(){
-        if(config == null || file == null) return;
+    public void saveConfig() {
+        if (config == null || file == null) return;
 
-        try{
+        try {
             getConfig().save(file);
-        } catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
@@ -52,7 +51,7 @@ public class ConfigHandler {
         config = YamlConfiguration.loadConfiguration(file);
     }
 
-    public File getFile(){
+    public File getFile() {
         return file;
     }
 

@@ -2,31 +2,31 @@ package pl.gduraj.glencuboid.config;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import pl.gduraj.glencuboid.GlenCuboid;
-import pl.gduraj.glencuboid.cuboid.Flag;
 
 import java.util.HashMap;
 
 public class ConfigManager {
 
-    private GlenCuboid plugin;
-    private HashMap<String, ConfigHandler> configs;
+    private final GlenCuboid plugin;
+    private final HashMap<String, ConfigHandler> configs;
 
-    public ConfigManager(){
+    public ConfigManager() {
         this.plugin = GlenCuboid.getInstance();
         this.configs = new HashMap<>();
     }
 
-    public void install(){
+    public void install() {
         configs.put("config", new ConfigHandler(plugin, "config"));
         configs.put("messages", new ConfigHandler(plugin, "messages"));
         configs.put("flags", new ConfigHandler(plugin, "flags"));
         configs.put("groups", new ConfigHandler(plugin, "groups"));
+        configs.put("roles", new ConfigHandler(plugin, "roles"));
 
         configs.values().forEach(ConfigHandler::createDefault);
 
     }
 
-    public void reloadAll(){
+    public void reloadAll() {
         configs.values().forEach(ConfigHandler::reload);
     }
 
@@ -34,8 +34,8 @@ public class ConfigManager {
         configs.get(config.toLowerCase()).saveConfig();
     }
 
-    public FileConfiguration getConfig(String config){
-        if(configs.containsKey(config.toLowerCase()))
+    public FileConfiguration getConfig(String config) {
+        if (configs.containsKey(config.toLowerCase()))
             return configs.get(config.toLowerCase()).getConfig();
         else
             return configs.get("config").getConfig();

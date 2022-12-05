@@ -1,0 +1,121 @@
+flags:
+  ANVIL:
+    name: ANVIL
+    lores:
+      - Lore 1
+      - Lore 2
+  BED:
+    name: BED
+    lores:
+      - Lore 1
+      - Lore 2
+  BEACON:
+    name: BEACON
+    lores:
+      - Lore 1
+      - Lore 2
+  BUTTONS:
+    name: BUTTONS
+    lores:
+      - Lore 1
+      - Lore 2
+  CRAFTING:
+    name: CRAFTING
+    lores:
+      - Lore 1
+      - Lore 2
+  REDSTONE:
+    name: REDSTONE
+    lores:
+      - Lore 1
+      - Lore 2
+  DOORS:
+    name: DOORS
+    lores:
+      - Lore 1
+      - Lore 2
+  ENCHANT:
+    name: ENCHANT
+    lores:
+      - Lore 1
+      - Lore 2
+  LEVER:
+    name: LEVER
+    lores:
+      - Lore 1
+      - Lore 2
+  NAMETAG:
+    name: NAMETAG
+    lores:
+      - Lore 1
+      - Lore 2
+  PRESSUREPLATES:
+    name: PRESSUREPLATES
+    lores:
+      - Lore 1
+      - Lore 2
+  SHEARS:
+    name: SHEARS
+    lores:
+      - Lore 1
+      - Lore 2
+  TRADE:
+    name: TRADE
+    lores:
+      - Lore 1
+      - Lore 2
+  SPAWNEGG:
+    name: SPAWNEGG
+    lores:
+      - Lore 1
+      - Lore 2
+  USE:
+    name: USE
+    lores:
+      - Lore 1
+      - Lore 2
+  INVENTORY:
+    name: INVENTORY
+    lores:
+      - Lore 1
+      - Lore 2
+  ANIMALSKILLING:
+    name: ANIMALSKILLING
+    lores:
+      - Lore 1
+      - Lore 2
+  ANIMALSSPAWN:
+    name: ANIMALSSPAWN
+    lores:
+      - Lore 1
+      - Lore 2
+  MONSTERKILLING:
+    name: MONSTERKILLING
+    lores:
+      - Lore 1
+      - Lore 2
+  MONSTERSPAWN:
+    name: MONSTERSPAWN
+    lores:
+      - Lore 1
+      - Lore 2
+  MONSTERDAMAGE:
+    name: MONSTERDAMAGE
+    lores:
+      - Lore 1
+      - Lore 2
+  VILLAGERKILLING:
+    name: VILLAGERKILLING
+    lores:
+      - Lore 1
+      - Lore 2
+  WATERMOBSKILLING:
+    name: WATERMOBSKILLING
+    lores:
+      - Lore 1
+      - Lore 2
+  WATERMOBSSPAWN:
+    name: WATERMOBSSPAWN
+    lores:
+      - Lore 1
+      - Lore 2

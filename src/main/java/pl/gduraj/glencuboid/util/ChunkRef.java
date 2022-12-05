@@ -28,7 +28,7 @@ public class ChunkRef {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        ChunkRef other = (ChunkRef)obj;
+        ChunkRef other = (ChunkRef) obj;
         return (this.x == other.x && this.z == other.z);
     }
 
@@ -37,9 +37,7 @@ public class ChunkRef {
     }
 
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("{ x: ").append(this.x).append(", z: ").append(this.z).append(" }");
-        return sb.toString();
+        return "{ x: " + this.x + ", z: " + this.z + " }";
     }
 
     public int getZ() {

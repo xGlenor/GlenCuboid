@@ -8,7 +8,7 @@ public abstract class Storage {
     protected String CUBOID_TABLE;
     protected String PLAYERS_TABLE;
 
-    protected Storage(String tableCuboidName, String tablePlayerName){
+    protected Storage(String tableCuboidName, String tablePlayerName) {
         this.CUBOID_TABLE = tableCuboidName;
         this.PLAYERS_TABLE = tablePlayerName;
     }

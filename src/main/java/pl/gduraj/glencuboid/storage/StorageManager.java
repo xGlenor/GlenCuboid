@@ -25,7 +25,7 @@ public class StorageManager {
     private final String params;
     boolean isMYSQL;
 
-    public StorageManager(){
+    public StorageManager() {
         this.plugin = GlenCuboid.getInstance();
         config = plugin.getConfigManager().getConfig("config");
 
@@ -41,14 +41,14 @@ public class StorageManager {
 
         try {
             init();
-        }catch (SQLException ex){
+        } catch (SQLException ex) {
             ex.printStackTrace();
         }
     }
 
-    private Storage init() throws SQLException{
+    private Storage init() throws SQLException {
 
-        if(isMYSQL){
+        if (isMYSQL) {
             this.storage = new MySQL(hostname, port, dbName, username, password, params);
             this.storage.init();
         }
@@ -57,21 +57,21 @@ public class StorageManager {
         return null;
     }
 
-    public void insertField(Cuboid cuboid) throws SQLException{
+    public void insertField(Cuboid cuboid) throws SQLException {
         insertField(getConnection(), cuboid);
     }
 
 
-    public Map<String, List<Cuboid>> loadFields(String worldName){
+    public Map<String, List<Cuboid>> loadFields(String worldName) {
         Map<String, List<Cuboid>> cuboidsWorld = new HashMap<>();
         String query = "SELECT x, y, z, world, minx, miny, minz, maxx, maxy, maxz, type_id, name, owner_uuid, owner, allowed, flags "
                 + "FROM glencuboid_cuboids WHERE world = ?";
 
-        try (PreparedStatement ps = getConnection().prepareStatement(query)){
+        try (PreparedStatement ps = getConnection().prepareStatement(query)) {
             ps.setString(1, worldName);
-            try (ResultSet set = ps.executeQuery()){
+            try (ResultSet set = ps.executeQuery()) {
                 int i = 0;
-                while (set.next()){
+                while (set.next()) {
                     try {
                         int x = set.getInt("x");
                         int y = set.getInt("y");
@@ -89,11 +89,11 @@ public class StorageManager {
                         cub.getFlags().setPreventUse(preventUse);
                         cub.getFlags().setFlags(flags);
 
-                        if(!cuboidsWorld.containsKey(world))
+                        if (!cuboidsWorld.containsKey(world))
                             cuboidsWorld.put(world, new ArrayList<>());
                         cuboidsWorld.get(world).add(cub);
                         i++;
-                    }catch (Exception ex){
+                    } catch (Exception ex) {
                         ex.printStackTrace();
                     }
                 }
@@ -132,10 +132,10 @@ public class StorageManager {
         };
 
 
-        try(PreparedStatement ps = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)){
+        try (PreparedStatement ps = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             QueryBuilder.setArguments(ps, params);
 
-            synchronized (this){
+            synchronized (this) {
                 System.out.println("RESULT FIELD : " + ps.executeUpdate());
             }
 
@@ -143,11 +143,11 @@ public class StorageManager {
 
     }
 
-    public Connection getConnection() throws SQLException{
+    public Connection getConnection() throws SQLException {
         return storage.getConnection();
     }
 
-    public void close() throws SQLException{
+    public void close() throws SQLException {
         storage.close();
     }
 }

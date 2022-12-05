@@ -1,7 +1,7 @@
 package pl.gduraj.glencuboid.cuboid;
 
 import org.bukkit.configuration.file.FileConfiguration;
-
+import pl.gduraj.glencuboid.enums.Flag;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -20,10 +20,10 @@ public class CuboidSettings {
     protected ArrayList<Flag> disabledFlags;
     protected List<String> allowedPlayers;
 
-    public CuboidSettings(LinkedHashMap<String, Object> configs){
+    public CuboidSettings(LinkedHashMap<String, Object> configs) {
     }
 
-    public CuboidSettings(){
+    public CuboidSettings() {
         this.flags = new ArrayList<>();
         this.disabledFlags = new ArrayList<>();
         this.allowedPlayers = new ArrayList<>();
@@ -37,19 +37,19 @@ public class CuboidSettings {
         this.limits = new ArrayList<>();
     }
 
-    public void loadGroups(FileConfiguration config){
+    public void loadGroups(FileConfiguration config) {
 
     }
 
-    public void addPlayer(){
+    public void addPlayer() {
 
     }
 
-    public void removePlayer(){
+    public void removePlayer() {
 
     }
 
-    public void isDisabledFlag(Flag flag, Cuboid cuboid){
+    public void isDisabledFlag(Flag flag, Cuboid cuboid) {
 
     }
 

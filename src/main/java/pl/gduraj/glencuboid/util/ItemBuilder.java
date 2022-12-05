@@ -14,15 +14,15 @@ import java.util.List;
 
 public class ItemBuilder {
 
-    private LegacyComponentSerializer serializer = BukkitComponentSerializer.legacy();
-    private MiniMessage mm = GlenCuboid.getInstance().getMiniMessage();
+    private final LegacyComponentSerializer serializer = BukkitComponentSerializer.legacy();
+    private final MiniMessage mm = GlenCuboid.getInstance().getMiniMessage();
     private final ItemStack itemStack;
 
     public ItemBuilder(ItemStack itemStack) {
         this.itemStack = itemStack;
     }
 
-    public ItemBuilder(){
+    public ItemBuilder() {
         this.itemStack = null;
     }
 
@@ -37,13 +37,13 @@ public class ItemBuilder {
         return this;
     }
 
-    public ItemBuilder setAmount(int amount){
+    public ItemBuilder setAmount(int amount) {
         itemStack.setAmount(amount);
         return this;
     }
 
     public ItemBuilder setLore(List<String> lores) {
-        for(int i = 0; i < lores.size(); i++){
+        for (int i = 0; i < lores.size(); i++) {
             lores.set(i, serializer.serialize(mm.deserialize(lores.get(i))));
         }
 
@@ -53,7 +53,7 @@ public class ItemBuilder {
         return this;
     }
 
-    public ItemBuilder addLore(String lore){
+    public ItemBuilder addLore(String lore) {
         ItemMeta itemMeta = itemStack.getItemMeta();
         List<String> lores = itemMeta.getLore();
 
@@ -76,7 +76,7 @@ public class ItemBuilder {
         return this;
     }
 
-    public ItemBuilder setEnchant(Enchantment enchant, int level){
+    public ItemBuilder setEnchant(Enchantment enchant, int level) {
         itemStack.addUnsafeEnchantment(enchant, level);
         return this;
     }
@@ -86,21 +86,21 @@ public class ItemBuilder {
         return this;
     }
 
-    public ItemBuilder addFlag(ItemFlag...flag){
+    public ItemBuilder addFlag(ItemFlag... flag) {
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.addItemFlags(flag);
         itemStack.setItemMeta(itemMeta);
         return this;
     }
 
-    public ItemBuilder delFlag(ItemFlag ...flag) {
+    public ItemBuilder delFlag(ItemFlag... flag) {
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.removeItemFlags(flag);
         itemStack.setItemMeta(itemMeta);
         return this;
     }
 
-    public ItemBuilder glow(){
+    public ItemBuilder glow() {
         setEnchant(Enchantment.DURABILITY, 1);
         addFlag(ItemFlag.HIDE_ATTRIBUTES);
         return this;

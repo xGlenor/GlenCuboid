@@ -8,32 +8,32 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import pl.gduraj.glencuboid.cuboid.Cuboid;
-import pl.gduraj.glencuboid.cuboid.Flag;
+import pl.gduraj.glencuboid.enums.Flag;
 import pl.gduraj.glencuboid.util.ChatUtil;
 
 public class testCommand implements CommandExecutor {
 
-    private GlenCuboid plugin;
+    private final GlenCuboid plugin;
 
-    public testCommand(){
+    public testCommand() {
         this.plugin = GlenCuboid.getInstance();
     }
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
 
-        if(sender instanceof Player){
+        if (sender instanceof Player) {
             Player player = (Player) sender;
 
-            if(args.length > 0) {
+            if (args.length > 0) {
                 if (args[0].equalsIgnoreCase("test")) {
                     System.out.println("COSIK: " + plugin.getCuboidManager().getCuboids());
                     return true;
-                } else if(args[0].equalsIgnoreCase("flag")) {
+                } else if (args[0].equalsIgnoreCase("flag")) {
                     Flag flag1 = Flag.getFlag(args[1].toUpperCase());
-                    if(flag1 != null){
+                    if (flag1 != null) {
                         Cuboid cub = plugin.getCuboidManager().getByLoc(player);
-                        if(cub.getFlags().hasFlag(flag1))
+                        if (cub.getFlags().hasFlag(flag1))
                             cub.getFlags().addDisabledFlag(flag1);
                         else
                             cub.getFlags().removeDisabledFlag(flag1);
@@ -45,7 +45,7 @@ public class testCommand implements CommandExecutor {
                     ChatUtil.sendMSGColor(player, "<red>Nie ma takiej flagi");
                     return true;
 
-                } else if(args[0].equalsIgnoreCase("owner")) {
+                } else if (args[0].equalsIgnoreCase("owner")) {
                     String ownerNew = args[1];
 
                     Player player1 = Bukkit.getPlayer(ownerNew);
@@ -66,34 +66,34 @@ public class testCommand implements CommandExecutor {
                         ChatUtil.sendMSGColor(player, "<green>Zmieniono właściciela na: " + player1.getName());
                         return true;
                     }
-                }else if(args[0].equalsIgnoreCase("check")){
+                } else if (args[0].equalsIgnoreCase("check")) {
                     Cuboid cub = plugin.getCuboidManager().getByLoc(player);
-                    if(cub != null){
+                    if (cub != null) {
                         player.sendMessage(cub.getName());
                         player.sendMessage(cub.getOwner());
                         player.sendMessage(cub.getOwnerUUID());
                         player.sendMessage("FLAGS:");
                         System.out.println(cub.getFlags().getFlags());
                         System.out.println(cub.getFlags().getDisabledFlags());
-                        for(Flag f : cub.getFlags().getFlags()){
+                        for (Flag f : cub.getFlags().getFlags()) {
                             player.sendMessage(f.toString());
                         }
                         player.sendMessage("DISABLE FLAGS:");
-                        for(Flag f : cub.getFlags().getDisabledFlags()){
+                        for (Flag f : cub.getFlags().getDisabledFlags()) {
                             player.sendMessage(f.toString());
                         }
 
-                    }else{
+                    } else {
                         player.sendMessage("nie znaleziono");
                     }
                     return true;
-                }else if(args[0].equalsIgnoreCase("info")){
+                } else if (args[0].equalsIgnoreCase("info")) {
                     plugin.getCuboidManager().getCuboids().forEach((s, cuboid) -> {
                         System.out.println(cuboid);
                     });
 
                     plugin.getCuboidManager().getChunkCuboids().forEach((s, chunkRefListMap) -> {
-                        System.out.println( s + " " + chunkRefListMap);
+                        System.out.println(s + " " + chunkRefListMap);
                     });
                     return true;
                 }
@@ -108,7 +108,7 @@ public class testCommand implements CommandExecutor {
         return true;
     }
 
-    private String getStringFromArray(String[] args){
+    private String getStringFromArray(String[] args) {
         StringBuilder sb = new StringBuilder();
 
         for (String s : args)

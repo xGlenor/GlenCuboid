@@ -5,16 +5,16 @@ import org.bukkit.Material;
 
 public class MaterialGroups {
     public final static Material[] DOORS = new Material[]{
-                    XMaterial.OAK_DOOR.parseMaterial(),
-                    XMaterial.BIRCH_DOOR.parseMaterial(),
-                    XMaterial.DARK_OAK_DOOR.parseMaterial(),
-                    XMaterial.ACACIA_DOOR.parseMaterial(),
-                    XMaterial.JUNGLE_DOOR.parseMaterial(),
-                    XMaterial.MANGROVE_DOOR.parseMaterial(),
-                    XMaterial.SPRUCE_DOOR.parseMaterial(),
-                    XMaterial.WARPED_DOOR.parseMaterial(),
-                    XMaterial.CRIMSON_DOOR.parseMaterial(),
-                    XMaterial.IRON_DOOR.parseMaterial(),
+            XMaterial.OAK_DOOR.parseMaterial(),
+            XMaterial.BIRCH_DOOR.parseMaterial(),
+            XMaterial.DARK_OAK_DOOR.parseMaterial(),
+            XMaterial.ACACIA_DOOR.parseMaterial(),
+            XMaterial.JUNGLE_DOOR.parseMaterial(),
+            XMaterial.MANGROVE_DOOR.parseMaterial(),
+            XMaterial.SPRUCE_DOOR.parseMaterial(),
+            XMaterial.WARPED_DOOR.parseMaterial(),
+            XMaterial.CRIMSON_DOOR.parseMaterial(),
+            XMaterial.IRON_DOOR.parseMaterial(),
     };
 
     public final static Material[] BUTTONS = new Material[]{
@@ -48,15 +48,14 @@ public class MaterialGroups {
     };
 
 
-    public static boolean isDoors(Material material){
-        for(Material mat : DOORS){
-            if(material.equals(mat)){
+    public static boolean isDoors(Material material) {
+        for (Material mat : DOORS) {
+            if (material.equals(mat)) {
                 return true;
             }
         }
         return false;
     }
-
 
 
 }

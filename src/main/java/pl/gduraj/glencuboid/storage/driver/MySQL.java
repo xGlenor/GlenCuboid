@@ -5,17 +5,20 @@ import com.zaxxer.hikari.HikariDataSource;
 import pl.gduraj.glencuboid.GlenCuboid;
 import pl.gduraj.glencuboid.storage.Storage;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class MySQL extends Storage {
 
-    private String host;
-    private int port;
-    private String databaseName;
-    private String username;
-    private String password;
-    private String connParams;
-    private String POOL_NAME = "GlenCuboidHikariPool";
+    private final String host;
+    private final int port;
+    private final String databaseName;
+    private final String username;
+    private final String password;
+    private final String connParams;
+    private final String POOL_NAME = "GlenCuboidHikariPool";
     private HikariDataSource connectionField;
 
     public MySQL(String host, int port, String databaseName, String username, String password, String connParams) {
@@ -36,9 +39,9 @@ public class MySQL extends Storage {
     }
 
     @Override
-    protected Connection getConnection() throws SQLException{
+    protected Connection getConnection() throws SQLException {
         Connection conn = connectionField.getConnection();
-        if(conn == null || conn.isClosed()){
+        if (conn == null || conn.isClosed()) {
             install();
         }
 
@@ -84,7 +87,7 @@ public class MySQL extends Storage {
                 + "`flags` text DEFAULT NULL, "
                 + "`created_at` timestamp default CURRENT_TIMESTAMP)");
 
-        if(!tableExists(CUBOID_TABLE)){
+        if (!tableExists(CUBOID_TABLE)) {
             GlenCuboid.getInstance().getLogger().warning("SQL -> ERROR CREATE CUBOIDS TABLE");
             GlenCuboid.getInstance().disablePlugin();
         }
@@ -99,7 +102,7 @@ public class MySQL extends Storage {
                 + "`last_seen` bigint(20) default NULL, "
                 + "`flags` TEXT default NULL)");
 
-        if(!tableExists(PLAYERS_TABLE)){
+        if (!tableExists(PLAYERS_TABLE)) {
             GlenCuboid.getInstance().getLogger().warning("SQL -> ERROR CREATE PLAYERS TABLE");
             GlenCuboid.getInstance().disablePlugin();
         }
@@ -111,16 +114,15 @@ public class MySQL extends Storage {
     }
 
 
-
-    private void exec(String state) throws SQLException{
-        try(PreparedStatement ps = getConnection().prepareStatement(state)){
+    private void exec(String state) throws SQLException {
+        try (PreparedStatement ps = getConnection().prepareStatement(state)) {
             ps.execute();
         }
     }
 
     @Override
     public boolean tableExists(String table) throws SQLException {
-        try(ResultSet set = getConnection().getMetaData().getTables(null, null, table, null)){
+        try (ResultSet set = getConnection().getMetaData().getTables(null, null, table, null)) {
             return set.next();
         }
     }
