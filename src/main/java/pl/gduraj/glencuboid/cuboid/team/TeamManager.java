@@ -3,6 +3,7 @@ package pl.gduraj.glencuboid.cuboid.team;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.yaml.snakeyaml.util.EnumUtils;
 import pl.gduraj.glencuboid.GlenCuboid;
 import pl.gduraj.glencuboid.enums.Flag;
 
@@ -14,16 +15,14 @@ import java.util.Map;
 public class TeamManager {
 
     private final GlenCuboid plugin;
-    private final List<String> roles;
-    private final HashMap<String, List<String>> flagsByRole;
+    private final HashMap<CuboidRole, List<String>> flagsbyRole;
     private final List<String> displayFlags;
     private final FileConfiguration config;
 
     public TeamManager() {
         this.plugin = GlenCuboid.getInstance();
-        this.roles = new ArrayList<>();
         this.displayFlags = new ArrayList<>();
-        this.flagsByRole = new HashMap<>();
+        this.flagsbyRole = new HashMap<>();
         this.config = plugin.getConfigManager().getConfig("roles");
 
         if (config == null)
@@ -35,50 +34,46 @@ public class TeamManager {
     }
 
     private void loadRoles() {
-        ConfigurationSection cs = config.getConfigurationSection("roles");
-        for (String s : cs.getKeys(false)) {
-            roles.add(s.toUpperCase());
-            flagsByRole.put(s, cs.getStringList(s + ".flags"));
+        for(CuboidRole role : CuboidRole.values()){
+            List<String> flags = new ArrayList<>();
+            for(String s : config.getStringList(role.getPath() + ".flags")){
+                flags.add(s.toUpperCase());
+            }
+            flagsbyRole.put(role, flags);
         }
-
-        for(Map.Entry<String, List<String>> map : flagsByRole.entrySet()){
-            System.out.println(map.getKey() + " -> " + map.getValue());
-        }
-
-        GlenCuboid.getMessageLoaded().add("TeamManager -> Zaladowano " + roles.size() + " flag do wyświetlania");
     }
 
 
     private void loadDisplayFlags() {
-        for (String s : config.getStringList("display")) {
+        for (String s : config.getStringList("displayFlags")) {
             displayFlags.add(s.toUpperCase());
         }
 
         GlenCuboid.getMessageLoaded().add("TeamManager -> Zaladowano " + displayFlags.size() + " flag do wyświetlania");
     }
 
-    public List<String> getFlagsRole(String role){
-        if(!isRole(role)) return null;
-        return flagsByRole.get(role.toUpperCase());
+    public List<String> getFlagsRole(String role) {
+        if (!isRole(role)) return null;
+        return flagsbyRole.get(CuboidRole.valueOf(role));
     }
 
-    public boolean isFlagInRole(String role, Flag flag){
-        if(isRole(role)){
+    public boolean isFlagInRole(CuboidRole role, Flag flag){
+        return isFlagInRole(role.toString(), flag);
+    }
+
+    public boolean isFlagInRole(String role, Flag flag) {
+        if (isRole(role)) {
             return getFlagsRole(role).contains(flag.toString());
         }
         return false;
     }
 
-    public boolean isRole(String val) {
-        return roles.contains(val.toUpperCase());
+    public boolean isRole(String role) {
+        return CuboidRole.isRole(role);
     }
 
-    public List<String> getRoles() {
-        return roles;
-    }
-
-    public HashMap<String, List<String>> getFlagsByRole() {
-        return flagsByRole;
+    public HashMap<CuboidRole, List<String>> getFlagsbyRole() {
+        return flagsbyRole;
     }
 
     public List<String> getDisplayFlags() {

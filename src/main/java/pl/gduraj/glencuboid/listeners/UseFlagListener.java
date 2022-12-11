@@ -43,7 +43,7 @@ public class UseFlagListener implements Listener {
             Cuboid cub = plugin.getCuboidManager().getEnabledSource(block.getLocation(), Flag.USE);
             if (cub != null) {
                 if (cub.getFlags().isPreventMaterial(block.getType())) {
-                    if (!plugin.getCuboidManager().checkPerms(cub, player.getName(), Flag.USE)) {
+                    if (!plugin.getCuboidManager().playerHasPermission(cub, player, Flag.USE)) {
                         event.setCancelled(true);
                         ChatUtil.sendMSGColor(player, "<rainbow>nie masz dostępu USE");
                         return;
@@ -56,7 +56,7 @@ public class UseFlagListener implements Listener {
             if (!player.hasPermission("glencuboid.bypass.use")) {
                 Cuboid cuboid = plugin.getCuboidManager().getEnabledSource(block.getLocation(), Flag.CRAFTING);
                 if (cuboid != null) {
-                    if (!plugin.getCuboidManager().checkPerms(cuboid, player.getName(), Flag.CRAFTING)) {
+                    if (!plugin.getCuboidManager().playerHasPermission(cuboid, player, Flag.CRAFTING)) {
                         event.setCancelled(true);
                         ChatUtil.sendMSGColor(player, "<rainbow>nie masz dostępu CRAFTING");
                         return;
@@ -70,7 +70,7 @@ public class UseFlagListener implements Listener {
             if (!player.hasPermission("glencuboid.bypass.use")) {
                 Cuboid cuboid = plugin.getCuboidManager().getEnabledSource(block.getLocation(), Flag.DOORS);
                 if (cuboid != null) {
-                    if (!plugin.getCuboidManager().checkPerms(cuboid, player.getName(), Flag.DOORS)) {
+                    if (!plugin.getCuboidManager().playerHasPermission(cuboid, player, Flag.DOORS)) {
                         event.setCancelled(true);
                         ChatUtil.sendMSGColor(player, "<rainbow>nie masz dostępu DOORS");
                         return;
@@ -83,7 +83,7 @@ public class UseFlagListener implements Listener {
             if (!player.hasPermission("glencuboid.bypass.use")) {
                 Cuboid cuboid = plugin.getCuboidManager().getEnabledSource(block.getLocation(), Flag.BEACON);
                 if (cuboid != null) {
-                    if (!plugin.getCuboidManager().checkPerms(cuboid, player.getName(), Flag.BEACON)) {
+                    if (!plugin.getCuboidManager().playerHasPermission(cuboid, player, Flag.BEACON)) {
                         event.setCancelled(true);
                         ChatUtil.sendMSGColor(player, "<rainbow>nie masz dostępu BEACON");
                         return;
@@ -96,7 +96,7 @@ public class UseFlagListener implements Listener {
             if (!player.hasPermission("glencuboid.bypass.use")) {
                 Cuboid cuboid = plugin.getCuboidManager().getEnabledSource(block.getLocation(), Flag.ENCHANT);
                 if (cuboid != null) {
-                    if (!plugin.getCuboidManager().checkPerms(cuboid, player.getName(), Flag.ENCHANT)) {
+                    if (!plugin.getCuboidManager().playerHasPermission(cuboid, player, Flag.ENCHANT)) {
                         event.setCancelled(true);
                         ChatUtil.sendMSGColor(player, "<rainbow>nie masz dostępu ENCHANT");
                         return;
@@ -109,7 +109,7 @@ public class UseFlagListener implements Listener {
             if (!player.hasPermission("glencuboid.bypass.use")) {
                 Cuboid cuboid = plugin.getCuboidManager().getEnabledSource(block.getLocation(), Flag.SHEARS);
                 if (cuboid != null) {
-                    if (!plugin.getCuboidManager().checkPerms(cuboid, player.getName(), Flag.SHEARS)) {
+                    if (!plugin.getCuboidManager().playerHasPermission(cuboid, player, Flag.SHEARS)) {
                         event.setCancelled(true);
                         ChatUtil.sendMSGColor(player, "<rainbow>nie masz dostępu SHEARS");
                         return;
@@ -122,7 +122,7 @@ public class UseFlagListener implements Listener {
             if (!player.hasPermission("glencuboid.bypass.use")) {
                 Cuboid cuboid = plugin.getCuboidManager().getEnabledSource(block.getLocation(), Flag.LEVER);
                 if (cuboid != null) {
-                    if (!plugin.getCuboidManager().checkPerms(cuboid, player.getName(), Flag.LEVER)) {
+                    if (!plugin.getCuboidManager().playerHasPermission(cuboid, player, Flag.LEVER)) {
                         event.setCancelled(true);
                         ChatUtil.sendMSGColor(player, "<rainbow>nie masz dostępu LEVER");
                         return;
@@ -135,7 +135,7 @@ public class UseFlagListener implements Listener {
             if (!player.hasPermission("glencuboid.bypass.use")) {
                 Cuboid cuboid = plugin.getCuboidManager().getEnabledSource(block.getLocation(), Flag.BUTTONS);
                 if (cuboid != null) {
-                    if (!plugin.getCuboidManager().checkPerms(cuboid, player.getName(), Flag.BUTTONS)) {
+                    if (!plugin.getCuboidManager().playerHasPermission(cuboid, player, Flag.BUTTONS)) {
                         event.setCancelled(true);
                         ChatUtil.sendMSGColor(player, "<rainbow>nie masz dostępu BUTTONS");
                         return;
@@ -148,7 +148,7 @@ public class UseFlagListener implements Listener {
             if (!player.hasPermission("glencuboid.bypass.use")) {
                 Cuboid cuboid = plugin.getCuboidManager().getEnabledSource(block.getLocation(), Flag.PRESSUREPLATES);
                 if (cuboid != null) {
-                    if (!plugin.getCuboidManager().checkPerms(cuboid, player.getName(), Flag.PRESSUREPLATES)) {
+                    if (!plugin.getCuboidManager().playerHasPermission(cuboid, player, Flag.PRESSUREPLATES)) {
                         event.setCancelled(true);
                         ChatUtil.sendMSGColor(player, "<rainbow>nie masz dostępu PRESSURE PLATES");
                         return;
@@ -161,7 +161,7 @@ public class UseFlagListener implements Listener {
             if (!player.hasPermission("glencuboid.bypass.use")) {
                 Cuboid cuboid = plugin.getCuboidManager().getEnabledSource(block.getLocation(), Flag.BED);
                 if (cuboid != null) {
-                    if (!plugin.getCuboidManager().checkPerms(cuboid, player.getName(), Flag.BED)) {
+                    if (!plugin.getCuboidManager().playerHasPermission(cuboid, player, Flag.BED)) {
                         event.setCancelled(true);
                         ChatUtil.sendMSGColor(player, "<rainbow>nie masz dostępu BEDS");
                         return;
@@ -174,7 +174,7 @@ public class UseFlagListener implements Listener {
             if (!player.hasPermission("glencuboid.bypass.use")) {
                 Cuboid cuboid = plugin.getCuboidManager().getEnabledSource(block.getLocation(), Flag.ANVIL);
                 if (cuboid != null) {
-                    if (!plugin.getCuboidManager().checkPerms(cuboid, player.getName(), Flag.ANVIL)) {
+                    if (!plugin.getCuboidManager().playerHasPermission(cuboid, player, Flag.ANVIL)) {
                         event.setCancelled(true);
                         ChatUtil.sendMSGColor(player, "<rainbow>nie masz dostępu ANVIL");
                         return;
@@ -187,7 +187,7 @@ public class UseFlagListener implements Listener {
             if (!player.hasPermission("glencuboid.bypass.use")) {
                 Cuboid cuboid = plugin.getCuboidManager().getEnabledSource(block.getLocation(), Flag.SPAWNEGG);
                 if (cuboid != null) {
-                    if (!plugin.getCuboidManager().checkPerms(cuboid, player.getName(), Flag.SPAWNEGG)) {
+                    if (!plugin.getCuboidManager().playerHasPermission(cuboid, player, Flag.SPAWNEGG)) {
                         event.setCancelled(true);
                         ChatUtil.sendMSGColor(player, "<rainbow>nie masz dostępu SPAWNEGG");
                     }
@@ -212,7 +212,7 @@ public class UseFlagListener implements Listener {
                     Cuboid cuboid = plugin.getCuboidManager().getEnabledSource(entity.getLocation(), Flag.TRADE);
 
                     if (cuboid != null) {
-                        if (!plugin.getCuboidManager().checkPerms(cuboid, player.getName(), Flag.TRADE)) {
+                        if (!plugin.getCuboidManager().playerHasPermission(cuboid, player, Flag.TRADE)) {
                             ev.setCancelled(true);
                             ChatUtil.sendMSGColor(player, "<rainbow>nie masz dostepu TRADE");
                             return;
@@ -229,7 +229,7 @@ public class UseFlagListener implements Listener {
                     Cuboid cuboid = plugin.getCuboidManager().getEnabledSource(entity.getLocation(), Flag.NAMETAG);
 
                     if (cuboid != null) {
-                        if (!plugin.getCuboidManager().checkPerms(cuboid, player.getName(), Flag.NAMETAG)) {
+                        if (!plugin.getCuboidManager().playerHasPermission(cuboid, player, Flag.NAMETAG)) {
                             ev.setCancelled(true);
                             ChatUtil.sendMSGColor(player, "<rainbow>nie masz dostepu NAME TAG");
                         }

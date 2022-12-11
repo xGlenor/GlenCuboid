@@ -37,8 +37,10 @@ public enum Flag {
     MONSTERDAMAGE(XMaterial.ROTTEN_FLESH.parseMaterial(), FlagGroup.DAMAGE, true, false),
     VILLAGERKILLING(XMaterial.VILLAGER_SPAWN_EGG.parseMaterial(), FlagGroup.DAMAGE, true, false),
     WATERMOBSKILLING(XMaterial.PUFFERFISH.parseMaterial(), FlagGroup.DAMAGE, true, false),
-    WATERMOBSSPAWN(XMaterial.SHEEP_SPAWN_EGG.parseMaterial(), FlagGroup.DAMAGE, true, false);
+    WATERMOBSSPAWN(XMaterial.SHEEP_SPAWN_EGG.parseMaterial(), FlagGroup.DAMAGE, true, false),
 
+
+    ALL(null, FlagGroup.OTHERS, false, true);
 
     private Material icon;
     private FlagGroup flagGroup;

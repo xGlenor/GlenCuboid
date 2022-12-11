@@ -80,12 +80,14 @@ public class StorageManager {
                         String name = set.getString("name");
                         UUID uuidOwner = UUID.fromString(set.getString("owner_uuid"));
                         String owner = set.getString("owner");
+                        String allowed = set.getString("allowed");
                         String preventUse = set.getString("prevent_use");
                         String flags = set.getString("flags");
 
                         CuboidArea ca = new CuboidArea(new Location(Bukkit.getWorld(world), x, y, z), 25, 255);
                         Cuboid cub = new Cuboid(uuidOwner, owner, name, ca);
 
+                        cub.getTeam().setTeam(allowed);
                         cub.getFlags().setPreventUse(preventUse);
                         cub.getFlags().setFlags(flags);
 
@@ -125,8 +127,8 @@ public class StorageManager {
                 cuboid.getArea().getHighPoints().getBlockZ(),
                 0,
                 cuboid.getName(),
-                cuboid.getOwnerUUID().toString(),
-                cuboid.getOwner(),
+                cuboid.getTeam().getOwnerUUID().toString(),
+                cuboid.getTeam().getOwner(),
                 null,
                 cuboid.getFlags().getFlagsAsString()
         };

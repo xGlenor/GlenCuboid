@@ -1,14 +1,11 @@
 package pl.gduraj.glencuboid.cuboid;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 import pl.gduraj.glencuboid.cuboid.team.CuboidTeam;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 public class Cuboid {
@@ -44,6 +41,9 @@ public class Cuboid {
         this.flags = new CuboidFlag(this);
     }
 
+    private Cuboid() {
+    }
+
     public void addArea(CuboidArea area) {
 
     }
@@ -70,8 +70,6 @@ public class Cuboid {
         owner.sendMessage("Teleportowano cie na dzialke: " + owner.getName().toLowerCase() + " | " + getName());
     }
 
-    private Cuboid() {
-    }
 
     public String getName() {
         return name;

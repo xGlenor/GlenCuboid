@@ -5,6 +5,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import pl.gduraj.glencuboid.GlenCuboid;
+import pl.gduraj.glencuboid.cuboid.team.CuboidRole;
 import pl.gduraj.glencuboid.enums.Flag;
 import pl.gduraj.glencuboid.util.ChunkRef;
 
@@ -95,26 +96,39 @@ public class CuboidManager {
         return null;
     }
 
+
+    public boolean playerHasPermission(Cuboid cuboid, Player player, Flag flag){
+        if(player == null || cuboid == null || flag == null) return true;
+        if(player.hasPermission("glencuboid.bypass.perms") || cuboid.isOwner(player))
+            return true;
+
+        if (!cuboid.getFlags().hasFlag(flag)) {
+            return false;
+        }
+
+        if(cuboid.getTeam().isAllowed(player)){
+            CuboidRole role = cuboid.getTeam().getRolePlayer(player);
+
+            if(plugin.getTeamManager().isFlagInRole(role, flag)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+
     public boolean allowed(Cuboid cuboid, String target, Flag flag) {
         if (cuboid == null || target == null) {
             return false;
         }
 
-        if(cuboid.isOwner(target))
+        if (cuboid.isOwner(target))
             return true;
 
-        if(cuboid.getTeam().isAllowed(target)){
+        if (cuboid.getTeam().isAllowed(target)) {
             return plugin.getTeamManager().isFlagInRole(cuboid.getTeam().getRolePlayer(target), flag);
         }
         return false;
-    }
-
-    public boolean checkPerms(Cuboid cuboid, String playerName, Flag flag) {
-        if (!cuboid.getFlags().hasFlag(flag)) {
-            return false;
-        }
-
-        return allowed(cuboid, playerName, flag);
     }
 
     public void updateCuboid(Cuboid cuboid) {

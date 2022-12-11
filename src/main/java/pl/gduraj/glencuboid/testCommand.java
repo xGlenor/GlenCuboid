@@ -53,15 +53,15 @@ public class testCommand implements CommandExecutor {
                     if (cub != null) {
                         if (player1 == null) {
                             OfflinePlayer ofPlayer = Bukkit.getOfflinePlayer(ownerNew);
-                            cub.setOwner(ofPlayer.getName().toLowerCase());
-                            cub.setOwnerUUID(ofPlayer.getUniqueId());
+                            cub.getTeam().setOwner(ofPlayer.getName().toLowerCase());
+                            cub.getTeam().setOwnerUUID(ofPlayer.getUniqueId());
                             plugin.getCuboidManager().updateCuboid(cub);
                             ChatUtil.sendMSGColor(player, "<green>Zmieniono właściciela na: " + ofPlayer.getName());
                             return true;
                         }
 
-                        cub.setOwner(player1.getName().toLowerCase());
-                        cub.setOwnerUUID(player1.getUniqueId());
+                        cub.getTeam().setOwner(player1.getName().toLowerCase());
+                        cub.getTeam().setOwnerUUID(player1.getUniqueId());
                         plugin.getCuboidManager().updateCuboid(cub);
                         ChatUtil.sendMSGColor(player, "<green>Zmieniono właściciela na: " + player1.getName());
                         return true;
@@ -70,8 +70,8 @@ public class testCommand implements CommandExecutor {
                     Cuboid cub = plugin.getCuboidManager().getByLoc(player);
                     if (cub != null) {
                         player.sendMessage(cub.getName());
-                        player.sendMessage(cub.getOwner());
-                        player.sendMessage(cub.getOwnerUUID());
+                        player.sendMessage(cub.getTeam().getOwner());
+                        player.sendMessage(cub.getTeam().getOwnerUUID());
                         player.sendMessage("FLAGS:");
                         System.out.println(cub.getFlags().getFlags());
                         System.out.println(cub.getFlags().getDisabledFlags());
