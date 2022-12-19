@@ -2,10 +2,11 @@ package pl.gduraj.glencuboid.cuboid;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import pl.gduraj.glencuboid.GlenCuboid;
-import pl.gduraj.glencuboid.cuboid.team.CuboidRole;
+import pl.gduraj.glencuboid.enums.CuboidRole;
 import pl.gduraj.glencuboid.enums.Flag;
 import pl.gduraj.glencuboid.util.ChunkRef;
 
@@ -62,15 +63,10 @@ public class CuboidManager {
         Cuboid cb = new Cuboid(player, name, ca);
         List<Flag> flags = new ArrayList<>();
         List<Flag> disabledflags = new ArrayList<>();
+        flags.add(Flag.ALL);
         flags.add(Flag.USE);
-        flags.add(Flag.BEACON);
-        flags.add(Flag.DOORS);
         flags.add(Flag.ANIMALSKILLING);
-        flags.add(Flag.CRAFTING);
-        flags.add(Flag.ENCHANT);
-        flags.add(Flag.SHEARS);
-        flags.add(Flag.BUTTONS);
-        disabledflags.add(Flag.REDSTONE);
+        cb.getFlags().getPreventUse().add(Material.CRAFTING_TABLE);
         disabledflags.add(Flag.ANIMALSKILLING);
         disabledflags.add(Flag.ANIMALSSPAWN);
         cb.getFlags().setFlags(flags);
@@ -90,27 +86,31 @@ public class CuboidManager {
 
         Cuboid cuboid = getByLoc(loc);
 
-        if (cuboid.getFlags().hasFlag(flag)) {
-            return cuboid;
+        if (cuboid != null) {
+            if (cuboid.getFlags().hasFlag(flag)) {
+                return cuboid;
+            }
         }
         return null;
     }
 
 
-    public boolean playerHasPermission(Cuboid cuboid, Player player, Flag flag){
-        if(player == null || cuboid == null || flag == null) return true;
-        if(player.hasPermission("glencuboid.bypass.perms") || cuboid.isOwner(player))
+    public boolean playerHasPermission(Cuboid cuboid, Player player, Flag flag) {
+        if (player == null || cuboid == null || flag == null) return false;
+        System.out.println("PERM : test1");
+        if (player.hasPermission("glencuboid.bypass.perms") || cuboid.isOwner(player))
             return true;
 
-        if (!cuboid.getFlags().hasFlag(flag)) {
-            return false;
-        }
+        System.out.println("PERM : test2");
 
-        if(cuboid.getTeam().isAllowed(player)){
-            CuboidRole role = cuboid.getTeam().getRolePlayer(player);
-
-            if(plugin.getTeamManager().isFlagInRole(role, flag)){
-                return true;
+        if (cuboid.getFlags().hasFlag(flag)) {
+            if (cuboid.getTeam().isAllowed(player.getName().toLowerCase())) {
+                CuboidRole role = cuboid.getTeam().getRolePlayer(player);
+                System.out.println("TEST 1");
+                if (plugin.getTeamManager().isFlagInRole(role, flag)) {
+                    System.out.println("test 2");
+                    return true;
+                }
             }
         }
         return false;

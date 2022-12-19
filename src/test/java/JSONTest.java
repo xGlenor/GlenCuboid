@@ -23,7 +23,7 @@ public class JSONTest {
 
 
 
-    public static void main(String[] args) {
+/*    public static void main(String[] args) {
         String testSTR = test();
 
         HashMap<String, List<String>> list = new HashMap<>();
@@ -45,7 +45,7 @@ public class JSONTest {
 
 
 
-    }
+    }*/
 
 
 }

@@ -12,8 +12,8 @@ public class ConfigHandler {
 
     private final GlenCuboid plugin;
     private final String name;
-    private FileConfiguration config;
     private final File file;
+    private FileConfiguration config;
 
     public ConfigHandler(GlenCuboid plugin, String name) {
         this.plugin = plugin;

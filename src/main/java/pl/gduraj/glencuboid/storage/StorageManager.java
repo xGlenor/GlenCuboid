@@ -1,19 +1,19 @@
 package pl.gduraj.glencuboid.storage;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import pl.gduraj.glencuboid.GlenCuboid;
 import pl.gduraj.glencuboid.cuboid.Cuboid;
-import pl.gduraj.glencuboid.cuboid.CuboidArea;
+import pl.gduraj.glencuboid.enums.Dirty;
 import pl.gduraj.glencuboid.storage.driver.MySQL;
 
-import java.sql.*;
-import java.util.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
 
 public class StorageManager {
 
-    private Storage storage;
     private final GlenCuboid plugin;
     private final FileConfiguration config;
     private final String method;
@@ -24,6 +24,8 @@ public class StorageManager {
     private final String password;
     private final String params;
     boolean isMYSQL;
+    private Storage storage;
+    private CuboidStorage cuboidStorage;
 
     public StorageManager() {
         this.plugin = GlenCuboid.getInstance();
@@ -41,107 +43,79 @@ public class StorageManager {
 
         try {
             init();
+            this.cuboidStorage = new CuboidStorage(plugin, storage, getConnection());
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
     }
 
     private Storage init() throws SQLException {
-
         if (isMYSQL) {
             this.storage = new MySQL(hostname, port, dbName, username, password, params);
             this.storage.init();
         }
 
-
         return null;
     }
 
     public void insertField(Cuboid cuboid) throws SQLException {
-        insertField(getConnection(), cuboid);
+        cuboidStorage.insertField(cuboid);
     }
-
 
     public Map<String, List<Cuboid>> loadFields(String worldName) {
-        Map<String, List<Cuboid>> cuboidsWorld = new HashMap<>();
-        String query = "SELECT x, y, z, world, minx, miny, minz, maxx, maxy, maxz, type_id, name, owner_uuid, owner, allowed, flags "
-                + "FROM glencuboid_cuboids WHERE world = ?";
-
-        try (PreparedStatement ps = getConnection().prepareStatement(query)) {
-            ps.setString(1, worldName);
-            try (ResultSet set = ps.executeQuery()) {
-                int i = 0;
-                while (set.next()) {
-                    try {
-                        int x = set.getInt("x");
-                        int y = set.getInt("y");
-                        int z = set.getInt("z");
-                        String world = set.getString("world");
-                        String name = set.getString("name");
-                        UUID uuidOwner = UUID.fromString(set.getString("owner_uuid"));
-                        String owner = set.getString("owner");
-                        String allowed = set.getString("allowed");
-                        String preventUse = set.getString("prevent_use");
-                        String flags = set.getString("flags");
-
-                        CuboidArea ca = new CuboidArea(new Location(Bukkit.getWorld(world), x, y, z), 25, 255);
-                        Cuboid cub = new Cuboid(uuidOwner, owner, name, ca);
-
-                        cub.getTeam().setTeam(allowed);
-                        cub.getFlags().setPreventUse(preventUse);
-                        cub.getFlags().setFlags(flags);
-
-                        if (!cuboidsWorld.containsKey(world))
-                            cuboidsWorld.put(world, new ArrayList<>());
-                        cuboidsWorld.get(world).add(cub);
-                        i++;
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                    }
-                }
-                GlenCuboid.getMessageLoaded().add("Zaladowano " + i + " działek na świecie: " + worldName);
-
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-        return cuboidsWorld;
+        return cuboidStorage.loadFields(worldName);
     }
 
-    public void insertField(Connection conn, Cuboid cuboid) throws SQLException {
-
-        String query = "INSERT INTO `glencuboid_cuboids` (`x`, `y`, `z`, `world`, `minx`, `miny`, `minz`, "
-                + "`maxx`, `maxy`, `maxz`, `type_id`, `name`, `owner_uuid`, `owner`, `allowed`, "
-                + "`flags`) " + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        Object[] params = new Object[]{
-                cuboid.getArea().getCenterLocation().getBlockX(),
-                cuboid.getArea().getCenterLocation().getBlockY(),
-                cuboid.getArea().getCenterLocation().getBlockZ(),
-                cuboid.getArea().getWorld().getName(),
-                cuboid.getArea().getLowPoints().getBlockX(),
-                cuboid.getArea().getLowPoints().getBlockY(),
-                cuboid.getArea().getLowPoints().getBlockZ(),
-                cuboid.getArea().getHighPoints().getBlockX(),
-                cuboid.getArea().getHighPoints().getBlockY(),
-                cuboid.getArea().getHighPoints().getBlockZ(),
-                0,
-                cuboid.getName(),
-                cuboid.getTeam().getOwnerUUID().toString(),
-                cuboid.getTeam().getOwner(),
-                null,
-                cuboid.getFlags().getFlagsAsString()
-        };
-
-
-        try (PreparedStatement ps = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
-            QueryBuilder.setArguments(ps, params);
-
-            synchronized (this) {
-                System.out.println("RESULT FIELD : " + ps.executeUpdate());
-            }
-
+    public void offerCuboid(Cuboid cuboid) {
+        try {
+            updateCuboid(cuboid);
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+    }
+
+    public void updateCuboid(Cuboid cuboid) throws SQLException {
+        QueryBuilder builder = new QueryBuilder();
+
+        if (cuboid.isDirty(Dirty.CHANGE_OWNER)) {
+            builder.add("owner = ?", cuboid.getTeam().getOwner());
+            builder.add("owner_uuid = ?", cuboid.getTeam().getOwnerUUID().toString());
+        }
+        if (cuboid.isDirty(Dirty.CHANGE_ALLOWED)) {
+            builder.add("allowed = ?", cuboid.getTeam().getTeamAsString());
+        }
+        if (cuboid.isDirty(Dirty.UPDATE_PREVENTUSE)) {
+            builder.add("prevent_use = ?", cuboid.getFlags().getPreventUseAsString());
+        }
+        if (cuboid.isDirty(Dirty.CHANGE_FLAGS)) {
+            builder.add("flags = ?", cuboid.getFlags().getFlagsAsString());
+        }
+        if (cuboid.isDirty(Dirty.CHANGE_NAME)) {
+            builder.add("name = ?", cuboid.getName());
+        }
+
+        String builderString = builder.toQueryString();
+        if (builderString.isEmpty()) return;
+
+        try {
+            String query = "UPDATE `" + storage.CUBOID_TABLE + "` SET " + builderString + " "
+                    + "WHERE x = ? AND y = ? AND z = ? AND world = ?";
+
+            try (PreparedStatement ps = getConnection().prepareStatement(query)) {
+                int count = builder.setParameters(ps, 0);
+                ps.setInt(count + 1, cuboid.getArea().getCenterLocation().getBlockX());
+                ps.setInt(count + 2, cuboid.getArea().getCenterLocation().getBlockY());
+                ps.setInt(count + 3, cuboid.getArea().getCenterLocation().getBlockZ());
+                ps.setString(count + 4, cuboid.getArea().getCenterLocation().getWorld().getName());
+                if (!ps.execute())
+                    System.out.println("GIT");
+                else
+                    System.out.println("NIE GIT");
+            }
+        } finally {
+            cuboid.clearDirty();
+        }
+
 
     }
 

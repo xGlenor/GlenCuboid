@@ -52,7 +52,7 @@ public class UseFlagListener implements Listener {
             }
         }
 
-        if (block.getType().equals(XMaterial.CRAFTING_TABLE.parseMaterial())) {
+ /*       if (block.getType().equals(XMaterial.CRAFTING_TABLE.parseMaterial())) {
             if (!player.hasPermission("glencuboid.bypass.use")) {
                 Cuboid cuboid = plugin.getCuboidManager().getEnabledSource(block.getLocation(), Flag.CRAFTING);
                 if (cuboid != null) {
@@ -168,7 +168,7 @@ public class UseFlagListener implements Listener {
                     }
                 }
             }
-        }
+        }*/
 
         if (Tag.ANVIL.isTagged(block.getType())) {
             if (!player.hasPermission("glencuboid.bypass.use")) {

@@ -1,16 +1,14 @@
 package pl.gduraj.glencuboid.cuboid.team;
 
 
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.yaml.snakeyaml.util.EnumUtils;
 import pl.gduraj.glencuboid.GlenCuboid;
+import pl.gduraj.glencuboid.enums.CuboidRole;
 import pl.gduraj.glencuboid.enums.Flag;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class TeamManager {
 
@@ -34,13 +32,15 @@ public class TeamManager {
     }
 
     private void loadRoles() {
-        for(CuboidRole role : CuboidRole.values()){
+        for (CuboidRole role : CuboidRole.values()) {
             List<String> flags = new ArrayList<>();
-            for(String s : config.getStringList(role.getPath() + ".flags")){
+            for (String s : config.getStringList(role.getPath() + ".flags")) {
                 flags.add(s.toUpperCase());
             }
+            System.out.println(role + ": " + flags);
             flagsbyRole.put(role, flags);
         }
+        System.out.println(flagsbyRole);
     }
 
 
@@ -57,7 +57,7 @@ public class TeamManager {
         return flagsbyRole.get(CuboidRole.valueOf(role));
     }
 
-    public boolean isFlagInRole(CuboidRole role, Flag flag){
+    public boolean isFlagInRole(CuboidRole role, Flag flag) {
         return isFlagInRole(role.toString(), flag);
     }
 

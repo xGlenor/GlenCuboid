@@ -72,6 +72,27 @@ public class CuboidArea {
     public CuboidArea() {
     }
 
+    private static boolean advCuboidCheckCollision(Vector A1High, Vector A1Low, Vector A2High, Vector A2Low) {
+        int A1HX = A1High.getBlockX();
+        int A1LX = A1Low.getBlockX();
+        int A2HX = A2High.getBlockX();
+        int A2LX = A2Low.getBlockX();
+        if ((A1HX >= A2LX && A1HX <= A2HX) || (A1LX >= A2LX && A1LX <= A2HX) || (A2HX >= A1LX && A2HX <= A1HX) || (A2LX >= A1LX && A2LX <= A1HX)) {
+            int A1HY = A1High.getBlockY();
+            int A1LY = A1Low.getBlockY();
+            int A2HY = A2High.getBlockY();
+            int A2LY = A2Low.getBlockY();
+            if ((A1HY >= A2LY && A1HY <= A2HY) || (A1LY >= A2LY && A1LY <= A2HY) || (A2HY >= A1LY && A2HY <= A1HY) || (A2LY >= A1LY && A2LY <= A1HY)) {
+                int A1HZ = A1High.getBlockZ();
+                int A1LZ = A1Low.getBlockZ();
+                int A2HZ = A2High.getBlockZ();
+                int A2LZ = A2Low.getBlockZ();
+                return (A1HZ >= A2LZ && A1HZ <= A2HZ) || (A1LZ >= A2LZ && A1LZ <= A2HZ) || (A2HZ >= A1LZ && A2HZ <= A1HZ) || (A2LZ >= A1LZ && A2LZ <= A1HZ);
+            }
+        }
+        return false;
+    }
+
     public boolean isAreaWithinArea(CuboidArea area) {
         return (containsLoc(area.highPoints, area.getWorldName()) && containsLoc(area.lowPoints, area.getWorldName()));
     }
@@ -105,27 +126,6 @@ public class CuboidArea {
                 getWorldName()))
             return true;
         return advCuboidCheckCollision(this.highPoints, this.lowPoints, area.highPoints, area.lowPoints);
-    }
-
-    private static boolean advCuboidCheckCollision(Vector A1High, Vector A1Low, Vector A2High, Vector A2Low) {
-        int A1HX = A1High.getBlockX();
-        int A1LX = A1Low.getBlockX();
-        int A2HX = A2High.getBlockX();
-        int A2LX = A2Low.getBlockX();
-        if ((A1HX >= A2LX && A1HX <= A2HX) || (A1LX >= A2LX && A1LX <= A2HX) || (A2HX >= A1LX && A2HX <= A1HX) || (A2LX >= A1LX && A2LX <= A1HX)) {
-            int A1HY = A1High.getBlockY();
-            int A1LY = A1Low.getBlockY();
-            int A2HY = A2High.getBlockY();
-            int A2LY = A2Low.getBlockY();
-            if ((A1HY >= A2LY && A1HY <= A2HY) || (A1LY >= A2LY && A1LY <= A2HY) || (A2HY >= A1LY && A2HY <= A1HY) || (A2LY >= A1LY && A2LY <= A1HY)) {
-                int A1HZ = A1High.getBlockZ();
-                int A1LZ = A1Low.getBlockZ();
-                int A2HZ = A2High.getBlockZ();
-                int A2LZ = A2Low.getBlockZ();
-                return (A1HZ >= A2LZ && A1HZ <= A2HZ) || (A1LZ >= A2LZ && A1LZ <= A2HZ) || (A2HZ >= A1LZ && A2HZ <= A1HZ) || (A2LZ >= A1LZ && A2LZ <= A1HZ);
-            }
-        }
-        return false;
     }
 
     public List<ChunkRef> getChunks() {

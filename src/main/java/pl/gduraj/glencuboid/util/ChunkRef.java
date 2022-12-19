@@ -7,10 +7,6 @@ public class ChunkRef {
 
     private final int x;
 
-    public static int getChunkCoord(int val) {
-        return val >> 4;
-    }
-
     public ChunkRef(Location loc) {
         this.x = getChunkCoord(loc.getBlockX());
         this.z = getChunkCoord(loc.getBlockZ());
@@ -19,6 +15,10 @@ public class ChunkRef {
     public ChunkRef(int x, int z) {
         this.x = x;
         this.z = z;
+    }
+
+    public static int getChunkCoord(int val) {
+        return val >> 4;
     }
 
     public boolean equals(Object obj) {

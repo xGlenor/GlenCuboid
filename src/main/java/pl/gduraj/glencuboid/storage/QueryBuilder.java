@@ -20,6 +20,12 @@ public class QueryBuilder {
         this(new StringBuilder(), new ArrayList<>());
     }
 
+    static void setArguments(PreparedStatement prepStmt, Object... parameters) throws SQLException {
+        for (int n = 0; n < parameters.length; n++) {
+            prepStmt.setObject(n + 1, parameters[n]);
+        }
+    }
+
     private void append(String value) {
         if (queryBuilder.length() != 0)
             queryBuilder.append(", ");
@@ -45,11 +51,5 @@ public class QueryBuilder {
             ps.setObject(offset + 1 + i, parameters.get(i));
         }
         return parameters.size();
-    }
-
-    static void setArguments(PreparedStatement prepStmt, Object... parameters) throws SQLException {
-        for (int n = 0; n < parameters.length; n++) {
-            prepStmt.setObject(n + 1, parameters[n]);
-        }
     }
 }

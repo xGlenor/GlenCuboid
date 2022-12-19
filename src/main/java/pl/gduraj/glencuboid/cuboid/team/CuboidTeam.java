@@ -7,16 +7,16 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import pl.gduraj.glencuboid.cuboid.Cuboid;
-import pl.gduraj.glencuboid.enums.Flag;
+import pl.gduraj.glencuboid.enums.CuboidRole;
+import pl.gduraj.glencuboid.enums.Dirty;
 
 import java.util.*;
 
 public class CuboidTeam {
 
+    private final Cuboid cuboid;
     private UUID ownerUUID;
     private String owner;
-
-    private final Cuboid cuboid;
     private HashMap<String, CuboidRole> allowed;
 
     public CuboidTeam(UUID ownerUUID, String owner, Cuboid cuboid) {
@@ -30,33 +30,58 @@ public class CuboidTeam {
         this.cuboid = cuboid;
     }
 
-    public boolean isAllowed(Player player){
+    public boolean isAllowed(Player player) {
         return isAllowed(player.getName().toLowerCase());
     }
 
     public boolean isAllowed(String name) {
-        return getAllowed().containsValue(name.toLowerCase());
+        return getAllowed().containsKey(name.toLowerCase());
     }
 
     public boolean addPlayer(Player player) {
-        return addPlayer(player.getName().toLowerCase());
+        return addPlayer(player.getName());
     }
 
-    public boolean addPlayer(String player){
-        if(!allowed.containsKey(player)){
-            allowed.put(player.toLowerCase(), CuboidRole.MEMBER);
+    public boolean addPlayer(String player) {
+        return addPlayer(player, "MEMBER");
+    }
+
+    public boolean addPlayer(String player, String role) {
+        CuboidRole cRole = CuboidRole.valueOf(role);
+        if (!allowed.containsKey(player.toLowerCase())) {
+            allowed.put(player.toLowerCase(), cRole);
+            cuboid.addDirty(Dirty.CHANGE_ALLOWED);
             return true;
         }
         return false;
     }
 
-    public boolean removePlayer(Player player){
+    public boolean setRole(String player, String role) {
+        CuboidRole cRole = CuboidRole.valueOf(role);
+        if (allowed.containsKey(player.toLowerCase()))
+            removePlayer(player);
+
+        addPlayer(player, cRole.toString());
+
+        return isRole(player, cRole);
+    }
+
+    public boolean isRole(String player, CuboidRole role) {
+        if (allowed.containsKey(player.toLowerCase())) {
+            return allowed.get(player.toLowerCase()).equals(role);
+        }
+        System.out.println("isRole: Test");
+        return false;
+    }
+
+    public boolean removePlayer(Player player) {
         return removePlayer(player.getName().toLowerCase());
     }
 
-    public boolean removePlayer(String player){
-        if(allowed.containsKey(player)){
+    public boolean removePlayer(String player) {
+        if (allowed.containsKey(player)) {
             allowed.remove(player.toLowerCase());
+            cuboid.addDirty(Dirty.CHANGE_ALLOWED);
             return true;
         }
         return false;
@@ -123,6 +148,7 @@ public class CuboidTeam {
 
     public void setOwner(String owner) {
         this.owner = owner;
+        cuboid.addDirty(Dirty.CHANGE_OWNER);
     }
 
     public HashMap<String, CuboidRole> getAllowed() {
@@ -137,20 +163,41 @@ public class CuboidTeam {
     }
 
     public void setTeam(String jsonSTR) {
-        if(allowed == null) allowed = new HashMap<>();
-        else allowed.clear();
+        allowed.clear();
 
         JSONObject obj = (JSONObject) JSONValue.parse(jsonSTR);
-
+        System.out.println(obj);
         if (obj != null) {
-            for(Object role : obj.keySet()){
+            for (Object role : obj.keySet()) {
                 JSONArray players = (JSONArray) obj.get(role);
-
-                if(players != null)
-                    for(Object player : players)
+                System.out.println(role);
+                System.out.println(players);
+                if (players != null)
+                    for (Object player : players)
                         allowed.put((String) player, CuboidRole.valueOf((String) role));
             }
         }
     }
 
+    public String getTeamAsString() {
+        JSONObject obj = new JSONObject();
+
+        Map<CuboidRole, List<String>> roles = new HashMap<>();
+
+        for (Map.Entry<String, CuboidRole> player : allowed.entrySet()) {
+            String key = player.getKey();
+            CuboidRole role = player.getValue();
+            if (!roles.containsKey(role)) {
+                roles.put(role, new ArrayList<>());
+            }
+            roles.get(role).add(key);
+        }
+        for (CuboidRole role : roles.keySet()) {
+            JSONArray array = new JSONArray();
+            array.addAll(roles.get(role));
+            obj.put(role.toString(), array);
+        }
+
+        return obj.toJSONString();
+    }
 }

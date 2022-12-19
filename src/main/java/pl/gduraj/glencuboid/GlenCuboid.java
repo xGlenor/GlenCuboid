@@ -18,13 +18,21 @@ import java.util.List;
 public final class GlenCuboid extends JavaPlugin implements Listener {
 
     private static GlenCuboid instance;
+    private static List<String> messageLoaded;
     private MiniMessageManager miniMessageManager;
     private ConfigManager configManager;
     private StorageManager storageManager;
     private CuboidManager cuboidManager;
     private TeamManager teamManager;
     private MiniMessage miniMessage;
-    private static List<String> messageLoaded;
+
+    public static GlenCuboid getInstance() {
+        return instance;
+    }
+
+    public static List<String> getMessageLoaded() {
+        return messageLoaded;
+    }
 
     @Override
     public void onEnable() {
@@ -66,10 +74,6 @@ public final class GlenCuboid extends JavaPlugin implements Listener {
         }
     }
 
-    public static GlenCuboid getInstance() {
-        return instance;
-    }
-
     public MiniMessage getMiniMessage() {
         return miniMessageManager.getMiniMessage();
     }
@@ -96,9 +100,5 @@ public final class GlenCuboid extends JavaPlugin implements Listener {
 
     public TeamManager getTeamManager() {
         return teamManager;
-    }
-
-    public static List<String> getMessageLoaded() {
-        return messageLoaded;
     }
 }

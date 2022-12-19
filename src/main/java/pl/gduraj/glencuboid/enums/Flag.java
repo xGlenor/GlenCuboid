@@ -12,17 +12,17 @@ public enum Flag {
         USING FLAGS
      */
     ANVIL(XMaterial.ANVIL.parseMaterial(), FlagGroup.USE, true, false),
-    BED(XMaterial.WHITE_BED.parseMaterial(), FlagGroup.USE, true, false),
-    BEACON(XMaterial.BEACON.parseMaterial(), FlagGroup.USE, true, false),
-    BUTTONS(XMaterial.STONE_BUTTON.parseMaterial(), FlagGroup.USE, true, false),
-    CRAFTING(XMaterial.CRAFTING_TABLE.parseMaterial(), FlagGroup.USE, true, false),
-    REDSTONE(XMaterial.REDSTONE_TORCH.parseMaterial(), FlagGroup.USE, true, false),
-    DOORS(XMaterial.OAK_DOOR.parseMaterial(), FlagGroup.USE, true, false),
-    ENCHANT(XMaterial.ENCHANTING_TABLE.parseMaterial(), FlagGroup.USE, true, false),
-    LEVER(XMaterial.LEVER.parseMaterial(), FlagGroup.USE, true, false),
+    //BED(XMaterial.WHITE_BED.parseMaterial(), FlagGroup.USE, true, false),
+    //BEACON(XMaterial.BEACON.parseMaterial(), FlagGroup.USE, true, false),
+    //BUTTONS(XMaterial.STONE_BUTTON.parseMaterial(), FlagGroup.USE, true, false),
+    //CRAFTING(XMaterial.CRAFTING_TABLE.parseMaterial(), FlagGroup.USE, true, false),
+    //REDSTONE(XMaterial.REDSTONE_TORCH.parseMaterial(), FlagGroup.USE, true, false),
+    //DOORS(XMaterial.OAK_DOOR.parseMaterial(), FlagGroup.USE, true, false),
+    //ENCHANT(XMaterial.ENCHANTING_TABLE.parseMaterial(), FlagGroup.USE, true, false),
+    //LEVER(XMaterial.LEVER.parseMaterial(), FlagGroup.USE, true, false),
     NAMETAG(XMaterial.NAME_TAG.parseMaterial(), FlagGroup.USE, true, false),
-    PRESSUREPLATES(XMaterial.LIGHT_WEIGHTED_PRESSURE_PLATE.parseMaterial(), FlagGroup.USE, true, false),
-    SHEARS(XMaterial.SHEARS.parseMaterial(), FlagGroup.USE, true, false),
+    //PRESSUREPLATES(XMaterial.LIGHT_WEIGHTED_PRESSURE_PLATE.parseMaterial(), FlagGroup.USE, true, false),
+    //SHEARS(XMaterial.SHEARS.parseMaterial(), FlagGroup.USE, true, false),
     TRADE(XMaterial.EMERALD.parseMaterial(), FlagGroup.USE, true, false),
     SPAWNEGG(XMaterial.SHEEP_SPAWN_EGG.parseMaterial(), FlagGroup.USE, true, false),
 
@@ -48,12 +48,6 @@ public enum Flag {
     private boolean enabled;
     private Set<String> groups = null;
 
-    public enum FlagGroup {
-        USE,
-        DAMAGE,
-        OTHERS
-    }
-
     Flag(Material icon, FlagGroup flagGroup, boolean change, boolean enabled) {
         this.icon = icon;
         this.flagGroup = flagGroup;
@@ -61,6 +55,18 @@ public enum Flag {
         this.enabled = enabled;
     }
 
+    public static Flag getFlag(String flag) {
+        byte b;
+        int i;
+        Flag[] arrayOfFlags;
+        for (i = (arrayOfFlags = values()).length, b = 0; b < i; ) {
+            Flag f = arrayOfFlags[b];
+            if (f.toString().equalsIgnoreCase(flag))
+                return f;
+            b++;
+        }
+        return null;
+    }
 
     public Material getIcon() {
         return icon;
@@ -118,17 +124,10 @@ public enum Flag {
         this.groups = null;
     }
 
-    public static Flag getFlag(String flag) {
-        byte b;
-        int i;
-        Flag[] arrayOfFlags;
-        for (i = (arrayOfFlags = values()).length, b = 0; b < i; ) {
-            Flag f = arrayOfFlags[b];
-            if (f.toString().equalsIgnoreCase(flag))
-                return f;
-            b++;
-        }
-        return null;
+    public enum FlagGroup {
+        USE,
+        DAMAGE,
+        OTHERS
     }
 
 

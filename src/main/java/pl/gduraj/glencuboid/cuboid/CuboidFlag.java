@@ -4,6 +4,7 @@ import org.bukkit.Material;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
+import pl.gduraj.glencuboid.enums.Dirty;
 import pl.gduraj.glencuboid.enums.Flag;
 import pl.gduraj.glencuboid.util.xseries.XMaterial;
 
@@ -32,11 +33,13 @@ public class CuboidFlag {
     public void addDisabledFlag(Flag flag) {
         flags.remove(flag);
         disabledFlags.add(flag);
+        cuboid.addDirty(Dirty.CHANGE_FLAGS);
     }
 
     public void removeDisabledFlag(Flag flag) {
         disabledFlags.remove(flag);
         flags.add(flag);
+        cuboid.addDirty(Dirty.CHANGE_FLAGS);
     }
 
     public boolean hasFlag(Flag flag) {
@@ -76,6 +79,25 @@ public class CuboidFlag {
         return obj.toJSONString();
     }
 
+    public String getPreventUseAsString() {
+        JSONArray array = new JSONArray();
+        for (Material m : preventUse) {
+            array.add(m.name());
+        }
+        return array.toJSONString();
+    }
+
+    public boolean isPreventMaterial(Material material) {
+        if (material != null) {
+            return preventUse.contains(material);
+        }
+        return false;
+    }
+
+    public List<Flag> getFlags() {
+        return flags;
+    }
+
     public void setFlags(String jsonSTR) {
 
         JSONObject obj = (JSONObject) JSONValue.parse(jsonSTR);
@@ -97,40 +119,30 @@ public class CuboidFlag {
 
     }
 
-    public void setPreventUse(String jsonSTR) {
-        JSONArray array = (JSONArray) JSONValue.parse(jsonSTR);
-
-        if (array != null) {
-
-            for (Object obj : array) {
-                this.preventUse.add(XMaterial.valueOf((String) obj).parseMaterial());
-            }
-
-        }
-
-    }
-
-    public boolean isPreventMaterial(Material material) {
-        if (material != null) {
-            return preventUse.contains(material);
-        }
-        return false;
-    }
-
-    public List<Flag> getFlags() {
-        return flags;
+    public void setFlags(List<Flag> flags) {
+        this.flags = flags;
     }
 
     public List<Material> getPreventUse() {
         return preventUse;
     }
 
-    public void setPreventUse(List<Material> preventUse) {
-        this.preventUse = preventUse;
+    public void setPreventUse(String jsonSTR) {
+        if (jsonSTR == null) return;
+        if (JSONValue.parse(jsonSTR) instanceof JSONArray) {
+            JSONArray array = (JSONArray) JSONValue.parse(jsonSTR);
+            if (array != null) {
+                for (Object arr : array) {
+                    preventUse.add(XMaterial.valueOf((String) arr).parseMaterial());
+                }
+            }
+            System.out.println(preventUse);
+        }
+
     }
 
-    public void setFlags(List<Flag> flags) {
-        this.flags = flags;
+    public void setPreventUse(List<Material> preventUse) {
+        this.preventUse = preventUse;
     }
 
     public List<Flag> getDisabledFlags() {

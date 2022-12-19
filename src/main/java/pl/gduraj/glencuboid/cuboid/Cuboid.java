@@ -5,22 +5,26 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 import pl.gduraj.glencuboid.cuboid.team.CuboidTeam;
+import pl.gduraj.glencuboid.enums.Dirty;
 
+import java.sql.Timestamp;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 public class Cuboid {
 
-    private String name;
-
     protected CuboidArea area;
     protected CuboidFlag flags;
     protected CuboidTeam team;
+    protected long createTime;
+    private String name;
     //protected FlagSetiings flags;
     //protected Roles role;
-
-    protected long createTime;
+    private final Set<Dirty> dirty;
 
     public Cuboid(Player owner, String cuboidName, Location centerLoc, int radius, int height) {
+        this();
         this.team = new CuboidTeam(owner.getUniqueId(), owner.getName().toLowerCase(), this);
         this.name = cuboidName;
         this.area = new CuboidArea(centerLoc, radius, height);
@@ -28,6 +32,7 @@ public class Cuboid {
     }
 
     public Cuboid(UUID ownerUUID, String owner, String cuboidName, CuboidArea area) {
+        this();
         this.team = new CuboidTeam(ownerUUID, owner, this);
         this.name = cuboidName;
         this.area = area;
@@ -35,6 +40,7 @@ public class Cuboid {
     }
 
     public Cuboid(Player player, String cuboidName, CuboidArea area) {
+        this();
         this.team = new CuboidTeam(player.getUniqueId(), player.getName().toLowerCase(), this);
         this.name = cuboidName;
         this.area = area;
@@ -42,6 +48,7 @@ public class Cuboid {
     }
 
     private Cuboid() {
+        this.dirty = new HashSet<>();
     }
 
     public void addArea(CuboidArea area) {
@@ -77,6 +84,7 @@ public class Cuboid {
 
     public void setName(String name) {
         this.name = name;
+        dirty.add(Dirty.CHANGE_NAME);
     }
 
     public CuboidArea getArea() {
@@ -89,10 +97,6 @@ public class Cuboid {
 
     public long getCreateTime() {
         return createTime;
-    }
-
-    public void setCreateTime(long createTime) {
-        this.createTime = createTime;
     }
 
     public CuboidFlag getFlags() {
@@ -125,6 +129,27 @@ public class Cuboid {
 
     public boolean isOwner(CommandSender sender) {
         return getTeam().isOwner(sender);
+    }
+
+    public void addDirty(Dirty reason) {
+        if (dirty.contains(reason)) return;
+        dirty.add(reason);
+    }
+
+    public boolean isDirty(Dirty dirtyType) {
+        return dirty.contains(dirtyType);
+    }
+
+    public void clearDirty() {
+        dirty.clear();
+    }
+
+    public String getIDString() {
+        return getName() + "-" + getTeam().getOwner() + "-" + createTime;
+    }
+
+    public void setCreatedTime(Timestamp time) {
+        this.createTime = time.getTime();
     }
 
 }
